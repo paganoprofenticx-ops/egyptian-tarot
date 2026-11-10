@@ -9,8 +9,8 @@ import { CardImage } from "@/components/ui/CardImage";
 import { siteConfig } from "@/config/site";
 
 interface DeckPageProps {
-  params: { deckId: string };
-  searchParams?: { categoria?: string | string[] };
+  params: Promise<{ deckId: string }>;
+  searchParams?: Promise<{ categoria?: string | string[] }>;
 }
 
 export function generateStaticParams() {
@@ -18,7 +18,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: DeckPageProps): Promise<Metadata> {
-  const deck = getDeckById(params.deckId);
+  const { deckId } = await params;
+  const deck = getDeckById(deckId);
   if (!deck) return { title: "Mazo no encontrado" };
 
   return {
@@ -34,7 +35,9 @@ export async function generateMetadata({ params }: DeckPageProps): Promise<Metad
 }
 
 export default async function DeckPage({ params, searchParams }: DeckPageProps) {
-  const deck = await tarotRepository.getDeck(params.deckId);
+  const { deckId } = await params;
+  const resolvedSearchParams = await searchParams;
+  const deck = await tarotRepository.getDeck(deckId);
   if (!deck) notFound();
 
   if (!deck.isAvailable) {
@@ -75,9 +78,9 @@ export default async function DeckPage({ params, searchParams }: DeckPageProps) 
   }
 
   const cards = await tarotRepository.getCards(deck.id);
-  const rawCategory = Array.isArray(searchParams?.categoria)
-    ? searchParams?.categoria[0]
-    : searchParams?.categoria;
+  const rawCategory = Array.isArray(resolvedSearchParams?.categoria)
+    ? resolvedSearchParams.categoria[0]
+    : resolvedSearchParams?.categoria;
   const initialCategory = rawCategory === "major" || rawCategory === "minor" ? rawCategory : "all";
 
   return (

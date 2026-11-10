@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import type { CardCategory, CardSeries, CardSummary, TarotDeck } from "@/types/tarot";
 import { CardTile } from "@/components/cards/CardTile";
@@ -21,6 +21,10 @@ export function DeckExplorer({ deck, cards, initialCategory = "all" }: DeckExplo
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryFilter>(initialCategory);
   const [series, setSeries] = useState<SeriesFilter>("all");
+
+  useEffect(() => {
+    setCategory(initialCategory);
+  }, [initialCategory]);
 
   const isMarseille = deck.id === "marseille";
 

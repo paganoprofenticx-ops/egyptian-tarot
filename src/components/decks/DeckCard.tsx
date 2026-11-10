@@ -70,10 +70,16 @@ export function DeckCard({ deck, priority = false, className }: DeckCardProps) {
     </article>
   );
 
-  if (!deck.isAvailable) return content;
-
   return (
-    <Link href={`/decks/${deck.id}`} className="block h-full rounded-2xl focus-visible:outline-none">
+    <Link
+      href={`/decks/${deck.id}`}
+      className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+      aria-label={
+        deck.isAvailable
+          ? `Explorar ${deck.name}`
+          : `Ver la ficha de ${deck.name}, en preparación`
+      }
+    >
       {content}
     </Link>
   );

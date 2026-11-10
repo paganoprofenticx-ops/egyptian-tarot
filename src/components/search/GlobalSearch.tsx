@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Search, Sparkles, X } from "lucide-react";
 import type { CardSummary } from "@/types/tarot";
@@ -29,6 +29,10 @@ const suggestions = [
 export function GlobalSearch({ cards, initialQuery = "" }: GlobalSearchProps) {
   const [query, setQuery] = useState(initialQuery);
   const [deckFilter, setDeckFilter] = useState("all");
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   const deckNames = useMemo(
     () => Array.from(new Set(cards.map((card) => card.deckName))),

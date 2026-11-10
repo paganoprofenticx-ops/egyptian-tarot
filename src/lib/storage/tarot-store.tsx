@@ -19,7 +19,12 @@ const KEYS = {
   lastCard: `${STORAGE_PREFIX}:last-card`,
 } as const;
 
+const MAX_FAVORITES = 200;
 const MAX_HISTORY = 60;
+const MAX_PROGRESS_DECKS = 8;
+const MAX_PROGRESS_CARDS = 200;
+const MAX_TEXT_LENGTH = 120;
+const MAX_IMAGE_LENGTH = 200;
 
 export interface StoredCard {
   deckId: string;
@@ -56,28 +61,80 @@ export interface TarotStoreValue {
 
 const TarotStoreContext = createContext<TarotStoreValue | null>(null);
 
+function isSafeId(value: string): boolean {
+  return value.length > 0 && value.length <= 80 && /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(value);
+}
+
+function isSafeText(value: string): boolean {
+  return (
+    value.length > 0 &&
+    value.length <= MAX_TEXT_LENGTH &&
+    // Sin caracteres de control: evita textos raros en la interfaz.
+    !/[\u0000-\u001F\u007F]/.test(value)
+  );
+}
+
+function isSafeImage(value: string): boolean {
+  // Solo rutas locales bajo la raíz del sitio: nunca URLs externas ni
+  // secuencias que puedan escapar del origen.
+  return (
+    value.length > 0 &&
+    value.length <= MAX_IMAGE_LENGTH &&
+    value.startsWith("/") &&
+    !value.startsWith("//") &&
+    !value.includes("..") &&
+    !value.includes("\\") &&
+    !/[\u0000-\u001F\u007F]/.test(value)
+  );
+}
+
+function isValidTimestamp(value: string): boolean {
+  return value.length <= 40 && !Number.isNaN(Date.parse(value));
+}
+
 function isStoredCard(value: unknown): value is StoredCard {
   if (!value || typeof value !== "object") return false;
   const candidate = value as Partial<StoredCard>;
   return (
     typeof candidate.deckId === "string" &&
+    isSafeId(candidate.deckId) &&
     typeof candidate.deckName === "string" &&
+    isSafeText(candidate.deckName) &&
     typeof candidate.cardId === "string" &&
+    isSafeId(candidate.cardId) &&
     typeof candidate.number === "number" &&
+    Number.isInteger(candidate.number) &&
+    candidate.number >= 0 &&
+    candidate.number <= 999 &&
     typeof candidate.name === "string" &&
+    isSafeText(candidate.name) &&
     typeof candidate.image === "string" &&
+    isSafeImage(candidate.image) &&
     (candidate.category === "major" || candidate.category === "minor") &&
-    typeof candidate.timestamp === "string"
+    typeof candidate.timestamp === "string" &&
+    isValidTimestamp(candidate.timestamp)
   );
 }
 
-function readList(key: string): StoredCard[] {
+function readList(key: string, limit: number): StoredCard[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(key);
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed.filter(isStoredCard) : [];
+    if (!Array.isArray(parsed)) return [];
+
+    const seen = new Set<string>();
+    const cards: StoredCard[] = [];
+    for (const entry of parsed) {
+      if (!isStoredCard(entry)) continue;
+      const entryKey = `${entry.deckId}:${entry.cardId}`;
+      if (seen.has(entryKey)) continue;
+      seen.add(entryKey);
+      cards.push(entry);
+      if (cards.length >= limit) break;
+    }
+    return cards;
   } catch {
     return [];
   }
@@ -92,11 +149,20 @@ function readProgress(): ProgressState {
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
     return Object.fromEntries(
       Object.entries(parsed as Record<string, unknown>)
-        .filter(([, value]) => Array.isArray(value))
-        .map(([deckId, value]) => [
-          deckId,
-          (value as unknown[]).filter((id): id is string => typeof id === "string"),
-        ]),
+        .filter(([deckId, value]) => isSafeId(deckId) && Array.isArray(value))
+        .slice(0, MAX_PROGRESS_DECKS)
+        .map(([deckId, value]) => {
+          const seen = new Set<string>();
+          const ids: string[] = [];
+          for (const id of value as unknown[]) {
+            if (typeof id !== "string" || !isSafeId(id) || seen.has(id)) continue;
+            seen.add(id);
+            ids.push(id);
+            if (ids.length >= MAX_PROGRESS_CARDS) break;
+          }
+          return [deckId, ids] as const;
+        })
+        .filter(([, ids]) => ids.length > 0),
     );
   } catch {
     return {};
@@ -131,8 +197,8 @@ export function TarotStoreProvider({ children }: { children: ReactNode }) {
   const [lastCard, setLastCard] = useState<LastCard | null>(null);
 
   const load = useCallback(() => {
-    setFavorites(readList(KEYS.favorites));
-    setHistory(readList(KEYS.history));
+    setFavorites(readList(KEYS.favorites, MAX_FAVORITES));
+    setHistory(readList(KEYS.history, MAX_HISTORY));
     setProgress(readProgress());
     setLastCard(readLastCard());
   }, []);
@@ -181,7 +247,10 @@ export function TarotStoreProvider({ children }: { children: ReactNode }) {
           (item) => !(item.deckId === card.deckId && item.cardId === card.cardId),
         );
       }
-      return [{ ...card, timestamp: new Date().toISOString() }, ...current];
+      return [{ ...card, timestamp: new Date().toISOString() }, ...current].slice(
+        0,
+        MAX_FAVORITES,
+      );
     });
   }, []);
 
@@ -218,7 +287,10 @@ export function TarotStoreProvider({ children }: { children: ReactNode }) {
     setProgress((current) => {
       const viewed = current[card.deckId] ?? [];
       if (viewed.includes(card.cardId)) return current;
-      return { ...current, [card.deckId]: [...viewed, card.cardId] };
+      return {
+        ...current,
+        [card.deckId]: [...viewed, card.cardId].slice(-MAX_PROGRESS_CARDS),
+      };
     });
     setLastCard(entry);
   }, []);

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Check, Heart, Share2 } from "lucide-react";
+import { shareOrCopy } from "@/lib/share";
 import { useTarotStore, type StoredCard } from "@/lib/storage/tarot-store";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +14,7 @@ interface DailyCardActionsProps {
 export function DailyCardActions({ card, shareText }: DailyCardActionsProps) {
   const { hydrated, isFavorite, toggleFavorite } = useTarotStore();
   const favorite = hydrated && isFavorite(card.deckId, card.cardId);
-  const [copied, setCopied] = useState(false);
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "failed">("idle");
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -24,24 +25,17 @@ export function DailyCardActions({ card, shareText }: DailyCardActionsProps) {
 
   const share = async () => {
     const url = window.location.href;
-    const shareData = {
+    const outcome = await shareOrCopy({
       title: `La carta del día: ${card.name}`,
       text: shareText,
       url,
-    };
+    });
 
-    try {
-      if (typeof navigator.share === "function") {
-        await navigator.share(shareData);
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      if (copyTimer.current) clearTimeout(copyTimer.current);
-      copyTimer.current = setTimeout(() => setCopied(false), 2200);
-    } catch {
-      // El usuario canceló el diálogo o el portapapeles no está disponible.
-    }
+    if (outcome === "shared" || outcome === "cancelled") return;
+
+    setShareStatus(outcome);
+    if (copyTimer.current) clearTimeout(copyTimer.current);
+    copyTimer.current = setTimeout(() => setShareStatus("idle"), 2600);
   };
 
   return (
@@ -60,9 +54,33 @@ export function DailyCardActions({ card, shareText }: DailyCardActionsProps) {
         {favorite ? "Guardada" : "Guardar"}
       </button>
 
-      <button type="button" onClick={share} className="btn-quiet" aria-label="Compartir la carta del día">
-        {copied ? <Check size={14} aria-hidden="true" /> : <Share2 size={14} aria-hidden="true" />}
-        {copied ? "Enlace copiado" : "Compartir"}
+      <button
+        type="button"
+        onClick={share}
+        className="btn-quiet"
+        aria-label={
+          shareStatus === "failed"
+            ? "No se pudo compartir la carta; intentar de nuevo"
+            : "Compartir la carta del día"
+        }
+      >
+        {shareStatus === "copied" ? (
+          <Check size={14} aria-hidden="true" />
+        ) : (
+          <Share2 size={14} aria-hidden="true" />
+        )}
+        {shareStatus === "copied"
+          ? "Enlace copiado"
+          : shareStatus === "failed"
+            ? "No se pudo compartir"
+            : "Compartir"}
+        <span className="sr-only" role="status" aria-live="polite">
+          {shareStatus === "copied"
+            ? "Enlace copiado al portapapeles"
+            : shareStatus === "failed"
+              ? "No se pudo compartir el enlace"
+              : ""}
+        </span>
       </button>
     </div>
   );

@@ -7,7 +7,7 @@ import { CardExperience } from "@/components/cards/CardExperience";
 import { siteConfig } from "@/config/site";
 
 interface CardPageProps {
-  params: { deckId: string; cardId: string };
+  params: Promise<{ deckId: string; cardId: string }>;
 }
 
 export function generateStaticParams() {
@@ -18,7 +18,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CardPageProps): Promise<Metadata> {
-  const data = await tarotRepository.getCardWithNeighbours(params.deckId, params.cardId);
+  const { deckId, cardId } = await params;
+  const data = await tarotRepository.getCardWithNeighbours(deckId, cardId);
   if (!data) return { title: "Carta no encontrada" };
 
   const { card, deck } = data;
@@ -50,7 +51,8 @@ export async function generateMetadata({ params }: CardPageProps): Promise<Metad
 }
 
 export default async function CardPage({ params }: CardPageProps) {
-  const data = await tarotRepository.getCardWithNeighbours(params.deckId, params.cardId);
+  const { deckId, cardId } = await params;
+  const data = await tarotRepository.getCardWithNeighbours(deckId, cardId);
   if (!data) notFound();
 
   return (

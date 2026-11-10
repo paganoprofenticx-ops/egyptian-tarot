@@ -11,12 +11,15 @@ export const metadata: Metadata = {
 };
 
 interface SearchPageProps {
-  searchParams?: { q?: string | string[] };
+  searchParams?: Promise<{ q?: string | string[] }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const cards = await tarotRepository.getGlobalSummaries();
-  const rawQuery = Array.isArray(searchParams?.q) ? searchParams?.q[0] : searchParams?.q;
+  const resolvedSearchParams = await searchParams;
+  const rawQuery = Array.isArray(resolvedSearchParams?.q)
+    ? resolvedSearchParams.q[0]
+    : resolvedSearchParams?.q;
 
   return (
     <div>
