@@ -6,21 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "art": "node scripts/generate-card-art.mjs",
+    "art:marseille": "node scripts/generate-marseille-art.mjs",
+    "art:import": "node scripts/import-card-art.mjs",
+    "data:marseille": "node scripts/generate-marseille-manifest.mjs"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.70.0",
+    "next": "14.2.28",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.28"
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.28",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.28"
+    "typescript": "^5"
   }
 }

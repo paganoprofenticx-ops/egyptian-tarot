@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1100" viewBox="0 0 800 1100" role="img" aria-label="RIDER-WAITE">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#070A11"/>
+      <stop offset="0.55" stop-color="#0C1420"/>
+      <stop offset="1" stop-color="#05070B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="60%">
+      <stop offset="0" stop-color="#8FB3C9" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#8FB3C9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8FB3C9"/>
+      <stop offset="0.5" stop-color="#E9E3D5"/>
+      <stop offset="1" stop-color="#8FB3C9"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="800" height="1100" fill="url(#bg)"/>
+  <rect x="20" y="20" width="760" height="1060" rx="12" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+  <rect x="34" y="34" width="732" height="1032" rx="8" fill="none" stroke="#8FB3C9" stroke-opacity="0.35"/>
+  <rect x="20" y="20" width="760" height="1060" rx="12" fill="url(#glow)"/>
+  <path d="M60 90 L80 110 L60 130 L40 110 Z M740 90 L760 110 L740 130 L720 110 Z M60 990 L80 1010 L60 1030 L40 1010 Z M740 990 L760 1010 L740 1030 L720 1010 Z" fill="none" stroke="#8FB3C9" stroke-opacity="0.6"/>
+
+  <text x="400" y="108" text-anchor="middle" fill="#E9E3D5" fill-opacity="0.7" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="8">PRÓXIMAMENTE</text>
+  <path d="M170 132 H340 M460 132 H630" stroke="#8FB3C9" stroke-opacity="0.4"/>
+  <circle cx="400" cy="132" r="3" fill="#8FB3C9"/>
+
+  <g transform="translate(400 500)">
+    <circle cx="0" cy="0" r="232" fill="none" stroke="#8FB3C9" stroke-opacity="0.24"/>
+    <circle cx="0" cy="0" r="212" fill="none" stroke="#8FB3C9" stroke-opacity="0.42" stroke-dasharray="2 12"/>
+    <path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(0)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(10)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(20)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(30)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(40)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(50)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(60)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(70)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(80)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(90)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(100)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(110)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(120)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(130)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(140)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(150)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(160)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(170)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(180)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(190)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(200)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(210)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(220)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(230)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(240)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(250)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(260)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(270)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(280)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(290)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(300)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(310)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(320)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.7" transform="rotate(330)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(340)"/><path d="M0 -226 V-244" stroke="#8FB3C9" stroke-opacity="0.25" transform="rotate(350)"/>
+    <circle cx="0" cy="0" r="168" fill="#0C1420" fill-opacity="0.6" stroke="#8FB3C9" stroke-opacity="0.3"/>
+    <g stroke="#8FB3C9" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="0" cy="0" r="48"/>
+        <circle cx="0" cy="0" r="28" fill="#8FB3C9" opacity="0.16"/>
+        <path d="M0 -62 V-86" transform="rotate(0)"/><path d="M0 -62 V-86" transform="rotate(22.5)"/><path d="M0 -62 V-86" transform="rotate(45)"/><path d="M0 -62 V-86" transform="rotate(67.5)"/><path d="M0 -62 V-86" transform="rotate(90)"/><path d="M0 -62 V-86" transform="rotate(112.5)"/><path d="M0 -62 V-86" transform="rotate(135)"/><path d="M0 -62 V-86" transform="rotate(157.5)"/><path d="M0 -62 V-86" transform="rotate(180)"/><path d="M0 -62 V-86" transform="rotate(202.5)"/><path d="M0 -62 V-86" transform="rotate(225)"/><path d="M0 -62 V-86" transform="rotate(247.5)"/><path d="M0 -62 V-86" transform="rotate(270)"/><path d="M0 -62 V-86" transform="rotate(292.5)"/><path d="M0 -62 V-86" transform="rotate(315)"/><path d="M0 -62 V-86" transform="rotate(337.5)"/>
+        <circle cx="0" cy="0" r="7" fill="#8FB3C9"/>
+      </g>
+  </g>
+  <text x="400" y="818" text-anchor="middle" fill="#E9E3D5" font-family="Georgia, 'Times New Roman', serif" font-size="46" letter-spacing="2">RIDER-WAITE</text>
+  <text x="400" y="860" text-anchor="middle" fill="#8FB3C9" font-family="Georgia, 'Times New Roman', serif" font-size="19" font-style="italic">El clásico ilustrado</text>
+  <path d="M240 894 H360 M440 894 H560" stroke="#8FB3C9" stroke-opacity="0.55"/>
+  <path d="M400 884 L409 894 L400 904 L391 894 Z" fill="#8FB3C9" opacity="0.85"/>
+  <text x="400" y="944" text-anchor="middle" fill="#E9E3D5" fill-opacity="0.6" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="4">78 CARTAS · EN PREPARACIÓN</text>
+  <text x="400" y="1024" text-anchor="middle" fill="#8FB3C9" fill-opacity="0.7" font-family="Georgia, 'Times New Roman', serif" font-size="10" letter-spacing="5">ARCANA · BIBLIOTECA DE TAROT</text>
+  <rect width="800" height="1100" filter="url(#grain)" opacity="0.15"/>
+</svg>

@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1000" viewBox="0 0 640 1000" role="img" aria-label="Cuatro de Espadas, carta 54">
+  <title>Cuatro de Espadas</title>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0.45" y2="1">
+      <stop offset="0" stop-color="#F8EFDB"/>
+      <stop offset="0.46" stop-color="#EFE3C8"/>
+      <stop offset="1" stop-color="#D4BE97"/>
+    </linearGradient>
+    <radialGradient id="panel" cx="50%" cy="42%" r="66%">
+      <stop offset="0" stop-color="#F8EFDB" stop-opacity="0.96"/>
+      <stop offset="0.7" stop-color="#E6D5B6" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#D4BE97" stop-opacity="0.5"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="44%" r="58%">
+      <stop offset="0" stop-color="#4C5F70" stop-opacity="0.18"/>
+      <stop offset="0.6" stop-color="#4C5F70" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#4C5F70" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(34)">
+      <path d="M0 0 V9" stroke="#2A2018" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.34"/></feComponentTransfer>
+    </filter>
+    <filter id="rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.1" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <clipPath id="panelClip">
+      <rect x="68" y="150" width="504" height="632" rx="3"/>
+    </clipPath>
+  </defs>
+
+  <rect width="640" height="1000" fill="url(#paper)"/>
+  <rect width="640" height="1000" fill="url(#hatch)" opacity="0.65"/>
+
+  <rect x="14" y="14" width="612" height="972" rx="7" fill="none" stroke="#2A2018" stroke-width="3.2"/>
+  <rect x="26" y="26" width="588" height="948" rx="4" fill="none" stroke="#4C5F70" stroke-width="1.6"/>
+  <rect x="32" y="32" width="576" height="936" rx="3" fill="none" stroke="#A98131" stroke-width="0.8" opacity="0.8"/>
+
+  <g transform="translate(26 26) rotate(0)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+  <g transform="translate(614 26) rotate(90)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+  <g transform="translate(614 974) rotate(180)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+  <g transform="translate(26 974) rotate(270)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+
+  <text x="320" y="58" text-anchor="middle" fill="#4B3A2B" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="5.5">TAROT DE MARSEILLE</text>
+  <path d="M150 72 H286 M354 72 H490" stroke="#4C5F70" stroke-width="1.2" opacity="0.75"/>
+  <path d="M320 67 L326 73 L320 79 L314 73 Z" fill="#4C5F70"/>
+
+  <rect x="42" y="90" width="556" height="754" rx="3" fill="none" stroke="#2A2018" stroke-width="2.2"/>
+  <rect x="50" y="98" width="540" height="738" rx="2" fill="none" stroke="#4C5F70" stroke-width="1" opacity="0.85"/>
+
+  <circle cx="320" cy="90" r="27" fill="#F8EFDB" stroke="#2A2018" stroke-width="2.4"/>
+  <circle cx="320" cy="90" r="21" fill="none" stroke="#4C5F70" stroke-width="1"/>
+  <g transform="translate(320 90)"><g transform="scale(0.26)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#4C5F70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g>
+
+  <text x="320" y="130" text-anchor="middle" fill="#4C5F70" font-family="Georgia, 'Times New Roman', serif" font-size="10.5" letter-spacing="3.8">ESPADAS · CUATRO</text>
+
+  <g clip-path="url(#panelClip)">
+    <rect x="68" y="150" width="504" height="632" fill="url(#panel)"/>
+    <rect x="68" y="150" width="504" height="632" fill="url(#glow)"/>
+    <circle cx="152.0402697585523" cy="193.53830609144643" r="1.7329716212814674" fill="#4C5F70" opacity="0.2565154456347227"/><circle cx="156.18622256815434" cy="682.755985498894" r="1.1627723919926212" fill="#4C5F70" opacity="0.2804460140224546"/><circle cx="295.4995946958661" cy="690.915317799896" r="1.7357207891298458" fill="#4C5F70" opacity="0.14218737229704856"/><circle cx="144.83148169890046" cy="421.55781858973205" r="2.137943765101954" fill="#4C5F70" opacity="0.3137540943734348"/><circle cx="380.3136521205306" cy="189.43838176922873" r="1.0577037318842486" fill="#4C5F70" opacity="0.2970003060810268"/><circle cx="526.8353474400938" cy="517.3830574322492" r="1.14641426068265" fill="#4C5F70" opacity="0.3036014632601291"/><circle cx="526.9644448906183" cy="294.83120723068714" r="1.4456712820800022" fill="#4C5F70" opacity="0.2998666500486433"/><circle cx="108.77762771397829" cy="342.92529774736613" r="0.9899310403969139" fill="#4C5F70" opacity="0.15661816772073506"/><circle cx="515.6333565339446" cy="462.19496499653906" r="1.672207471053116" fill="#4C5F70" opacity="0.18841474967077376"/><circle cx="193.59994278103113" cy="337.8804141250439" r="1.8543574678013102" fill="#4C5F70" opacity="0.1622444253694266"/><circle cx="390.5246820785105" cy="540.4896267377771" r="1.3755834331503138" fill="#4C5F70" opacity="0.14345691164955496"/><circle cx="279.03392405062914" cy="383.99457621993497" r="1.537541008507833" fill="#4C5F70" opacity="0.22285775675438346"/><circle cx="158.3182280547917" cy="248.50434899702668" r="1.1904094378231094" fill="#4C5F70" opacity="0.22960889481939376"/><circle cx="467.1633137874305" cy="380.5896943612024" r="1.3650843317853287" fill="#4C5F70" opacity="0.27613922188058493"/><circle cx="427.87196476385" cy="346.17916744109243" r="1.414663277170621" fill="#4C5F70" opacity="0.2729821335803717"/><circle cx="299.95744333416224" cy="552.170553539414" r="1.5776755578815937" fill="#4C5F70" opacity="0.25306779847480354"/><circle cx="239.1334509588778" cy="558.7162043214776" r="1.641925037209876" fill="#4C5F70" opacity="0.3048331300076097"/><circle cx="388.44568275660276" cy="680.4310537702404" r="1.602898702560924" fill="#4C5F70" opacity="0.3055006780475378"/>
+    <rect x="68" y="150" width="504" height="632" fill="url(#hatch)" opacity="0.45"/>
+    <circle cx="320" cy="454" r="238" fill="none" stroke="#4C5F70" stroke-width="1" opacity="0.16"/>
+    <circle cx="320" cy="454" r="222" fill="none" stroke="#4C5F70" stroke-width="0.8" opacity="0.26" stroke-dasharray="2 9"/>
+    <g transform="translate(320 452)" filter="url(#rough)">
+      <g transform="translate(-82 -96)"><g transform="scale(1.1)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#4C5F70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g><g transform="translate(82 -96)"><g transform="scale(1.1)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#A98131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g><g transform="translate(-82 96)"><g transform="scale(1.1)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#4C5F70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g><g transform="translate(82 96)"><g transform="scale(1.1)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#4C5F70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g>
+    </g>
+    <rect x="68" y="150" width="504" height="632" fill="none" stroke="#2A2018" stroke-width="0.8" opacity="0.2"/>
+    <path d="M84 166 H154 M486 166 H556 M84 766 H154 M486 766 H556" stroke="#4C5F70" stroke-width="1.2" opacity="0.5"/>
+    <path d="M84 166 L100 166 L84 182 Z M556 166 L540 166 L556 182 Z M84 766 L100 766 L84 750 Z M556 766 L540 766 L556 750 Z" fill="#4C5F70" opacity="0.25"/>
+  </g>
+
+  <path d="M68 782 H572" stroke="#4C5F70" stroke-width="1.8" opacity="0.8"/>
+  <path d="M84 792 H556" stroke="#2A2018" stroke-width="0.8" opacity="0.28"/>
+
+  <text x="320" y="846" text-anchor="middle" fill="#4C5F70" font-family="Georgia, 'Times New Roman', serif" font-size="10" letter-spacing="4">ESPADAS · CUATRO</text>
+  <text x="320" y="892" text-anchor="middle" fill="#2A2018" font-family="Georgia, 'Times New Roman', serif" font-size="35" letter-spacing="0.6">Cuatro de Espadas</text>
+  <text x="320" y="922" text-anchor="middle" fill="#4C5F70" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic">PALO DE AIRE</text>
+  <path d="M220 942 H292 M348 942 H420" stroke="#4C5F70" stroke-width="1.2" opacity="0.8"/>
+  <path d="M320 936 L326 942 L320 948 L314 942 Z" fill="#4C5F70"/>
+  <text x="320" y="972" text-anchor="middle" fill="#4B3A2B" font-family="Georgia, 'Times New Roman', serif" font-size="8.5" letter-spacing="3.2" opacity="0.72">ARCANA · BIBLIOTECA DE TAROT</text>
+
+  <rect width="640" height="1000" filter="url(#grain)" opacity="0.14"/>
+</svg>

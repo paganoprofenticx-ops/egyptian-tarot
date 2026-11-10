@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1000" viewBox="0 0 640 1000" role="img" aria-label="As de Espadas, carta 51">
+  <title>As de Espadas</title>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0.45" y2="1">
+      <stop offset="0" stop-color="#F8EFDB"/>
+      <stop offset="0.46" stop-color="#EFE3C8"/>
+      <stop offset="1" stop-color="#D4BE97"/>
+    </linearGradient>
+    <radialGradient id="panel" cx="50%" cy="42%" r="66%">
+      <stop offset="0" stop-color="#F8EFDB" stop-opacity="0.96"/>
+      <stop offset="0.7" stop-color="#E6D5B6" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#D4BE97" stop-opacity="0.5"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="44%" r="58%">
+      <stop offset="0" stop-color="#4C5F70" stop-opacity="0.18"/>
+      <stop offset="0.6" stop-color="#4C5F70" stop-opacity="0.04"/>
+      <stop offset="1" stop-color="#4C5F70" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(34)">
+      <path d="M0 0 V9" stroke="#2A2018" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.34"/></feComponentTransfer>
+    </filter>
+    <filter id="rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.1" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <clipPath id="panelClip">
+      <rect x="68" y="150" width="504" height="632" rx="3"/>
+    </clipPath>
+  </defs>
+
+  <rect width="640" height="1000" fill="url(#paper)"/>
+  <rect width="640" height="1000" fill="url(#hatch)" opacity="0.65"/>
+
+  <rect x="14" y="14" width="612" height="972" rx="7" fill="none" stroke="#2A2018" stroke-width="3.2"/>
+  <rect x="26" y="26" width="588" height="948" rx="4" fill="none" stroke="#4C5F70" stroke-width="1.6"/>
+  <rect x="32" y="32" width="576" height="936" rx="3" fill="none" stroke="#A98131" stroke-width="0.8" opacity="0.8"/>
+
+  <g transform="translate(26 26) rotate(0)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+  <g transform="translate(614 26) rotate(90)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+  <g transform="translate(614 974) rotate(180)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+  <g transform="translate(26 974) rotate(270)" fill="none" stroke="#A98131" stroke-width="1.8" opacity="0.9">
+    <path d="M0 26 V0 H26"/>
+    <path d="M8 18 Q8 8 18 8"/>
+    <path d="M2 30 L8 24 M30 2 L24 8"/>
+    <circle cx="10" cy="10" r="2.2" fill="#A98131" stroke="none"/>
+  </g>
+
+  <text x="320" y="58" text-anchor="middle" fill="#4B3A2B" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="5.5">TAROT DE MARSEILLE</text>
+  <path d="M150 72 H286 M354 72 H490" stroke="#4C5F70" stroke-width="1.2" opacity="0.75"/>
+  <path d="M320 67 L326 73 L320 79 L314 73 Z" fill="#4C5F70"/>
+
+  <rect x="42" y="90" width="556" height="754" rx="3" fill="none" stroke="#2A2018" stroke-width="2.2"/>
+  <rect x="50" y="98" width="540" height="738" rx="2" fill="none" stroke="#4C5F70" stroke-width="1" opacity="0.85"/>
+
+  <circle cx="320" cy="90" r="27" fill="#F8EFDB" stroke="#2A2018" stroke-width="2.4"/>
+  <circle cx="320" cy="90" r="21" fill="none" stroke="#4C5F70" stroke-width="1"/>
+  <g transform="translate(320 90)"><g transform="scale(0.26)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#4C5F70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g>
+
+  <text x="320" y="130" text-anchor="middle" fill="#4C5F70" font-family="Georgia, 'Times New Roman', serif" font-size="10.5" letter-spacing="3.8">ESPADAS · AS</text>
+
+  <g clip-path="url(#panelClip)">
+    <rect x="68" y="150" width="504" height="632" fill="url(#panel)"/>
+    <rect x="68" y="150" width="504" height="632" fill="url(#glow)"/>
+    <circle cx="377.13033432886004" cy="462.5262576704845" r="2.23299810658209" fill="#4C5F70" opacity="0.13922383215278386"/><circle cx="180.52051017805934" cy="670.1353933652863" r="2.149804000928998" fill="#4C5F70" opacity="0.311822683531791"/><circle cx="208.29085608944297" cy="661.1681016315706" r="0.8954168305033818" fill="#4C5F70" opacity="0.16311880921013652"/><circle cx="262.9043663293123" cy="311.0142772612162" r="1.9105544904712588" fill="#4C5F70" opacity="0.23470207152888178"/><circle cx="232.12343542277813" cy="487.73158491263166" r="1.3912638247245923" fill="#4C5F70" opacity="0.30786806566640734"/><circle cx="211.87488873675466" cy="412.0278776916675" r="2.0250879292842" fill="#4C5F70" opacity="0.2581453753914684"/><circle cx="337.49786902964115" cy="594.6927037197165" r="1.121042296011001" fill="#4C5F70" opacity="0.19751027019694448"/><circle cx="223.19371335580945" cy="712.937217626255" r="1.259334343438968" fill="#4C5F70" opacity="0.1319572847150266"/><circle cx="287.5813172534108" cy="425.8388676973991" r="1.8839382881531492" fill="#4C5F70" opacity="0.27990668614394965"/><circle cx="269.73697359859943" cy="181.52928967401385" r="2.273449703189544" fill="#4C5F70" opacity="0.2710746975429356"/><circle cx="142.969427742064" cy="374.6276500602253" r="1.2391298912232742" fill="#4C5F70" opacity="0.27561817507259545"/><circle cx="200.84541088715196" cy="701.974748430308" r="2.268253021710552" fill="#4C5F70" opacity="0.29442383361048996"/><circle cx="395.2785427160561" cy="640.8781079985201" r="2.2211550190811975" fill="#4C5F70" opacity="0.18726379520259798"/><circle cx="241.22789949178696" cy="326.1587002235465" r="2.1612878487911074" fill="#4C5F70" opacity="0.28577683612704274"/><circle cx="212.6820631250739" cy="384.0380652518943" r="1.7612442587967962" fill="#4C5F70" opacity="0.15664055867120624"/><circle cx="304.93654284626245" cy="462.76515742670745" r="2.16726658209227" fill="#4C5F70" opacity="0.21836996686644852"/><circle cx="140.45751020684838" cy="317.4958253945224" r="1.2821223908802495" fill="#4C5F70" opacity="0.2880968714412302"/><circle cx="94.85016907379031" cy="340.27667952608317" r="0.8083044152706862" fill="#4C5F70" opacity="0.12481511843390762"/>
+    <rect x="68" y="150" width="504" height="632" fill="url(#hatch)" opacity="0.45"/>
+    <circle cx="320" cy="454" r="238" fill="none" stroke="#4C5F70" stroke-width="1" opacity="0.16"/>
+    <circle cx="320" cy="454" r="222" fill="none" stroke="#4C5F70" stroke-width="0.8" opacity="0.26" stroke-dasharray="2 9"/>
+    <g transform="translate(320 452)" filter="url(#rough)">
+      <g transform="translate(0 0)"><g transform="scale(1.9)">
+        <path d="M0 -56 L9 -22 V22 H-9 V-22 Z" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" stroke-linejoin="round" />
+        <path d="M0 -50 V18" fill="none" stroke="#4C5F70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M-30 22 H30" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M0 22 V46" fill="none" stroke="#2E3B47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="0" cy="51" r="7" fill="#D6DEE5" stroke="#2E3B47" stroke-width="3" />
+        <path d="M-17 29 Q0 39 17 29" fill="none" stroke="#2E3B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </g></g>
+    </g>
+    <rect x="68" y="150" width="504" height="632" fill="none" stroke="#2A2018" stroke-width="0.8" opacity="0.2"/>
+    <path d="M84 166 H154 M486 166 H556 M84 766 H154 M486 766 H556" stroke="#4C5F70" stroke-width="1.2" opacity="0.5"/>
+    <path d="M84 166 L100 166 L84 182 Z M556 166 L540 166 L556 182 Z M84 766 L100 766 L84 750 Z M556 766 L540 766 L556 750 Z" fill="#4C5F70" opacity="0.25"/>
+  </g>
+
+  <path d="M68 782 H572" stroke="#4C5F70" stroke-width="1.8" opacity="0.8"/>
+  <path d="M84 792 H556" stroke="#2A2018" stroke-width="0.8" opacity="0.28"/>
+
+  <text x="320" y="846" text-anchor="middle" fill="#4C5F70" font-family="Georgia, 'Times New Roman', serif" font-size="10" letter-spacing="4">ESPADAS · AS</text>
+  <text x="320" y="892" text-anchor="middle" fill="#2A2018" font-family="Georgia, 'Times New Roman', serif" font-size="35" letter-spacing="0.6">As de Espadas</text>
+  <text x="320" y="922" text-anchor="middle" fill="#4C5F70" font-family="Georgia, 'Times New Roman', serif" font-size="14" font-style="italic">PALO DE AIRE</text>
+  <path d="M220 942 H292 M348 942 H420" stroke="#4C5F70" stroke-width="1.2" opacity="0.8"/>
+  <path d="M320 936 L326 942 L320 948 L314 942 Z" fill="#4C5F70"/>
+  <text x="320" y="972" text-anchor="middle" fill="#4B3A2B" font-family="Georgia, 'Times New Roman', serif" font-size="8.5" letter-spacing="3.2" opacity="0.72">ARCANA · BIBLIOTECA DE TAROT</text>
+
+  <rect width="640" height="1000" filter="url(#grain)" opacity="0.14"/>
+</svg>

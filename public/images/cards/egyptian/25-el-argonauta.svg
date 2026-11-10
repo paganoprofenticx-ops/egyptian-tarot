@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1000" viewBox="0 0 640 1000" role="img" aria-label="El Argonauta, carta 25">
+  <title>El Argonauta</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#0A0E17"/>
+      <stop offset="0.55" stop-color="#150C09"/>
+      <stop offset="1" stop-color="#06080D"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="46%" r="58%">
+      <stop offset="0" stop-color="#DA8564" stop-opacity="0.22"/>
+      <stop offset="0.55" stop-color="#DA8564" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="#DA8564" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C06A4B"/>
+      <stop offset="0.5" stop-color="#C9D8EC"/>
+      <stop offset="1" stop-color="#C06A4B"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="72%">
+      <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+    </filter>
+    <clipPath id="arch"><path d="M70 730 V340 Q70 190 320 190 Q570 190 570 340 V730 Z"/></clipPath>
+  </defs>
+
+  <rect width="640" height="1000" fill="url(#bg)"/>
+  <rect x="16" y="16" width="608" height="968" rx="10" fill="none" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="27" y="27" width="586" height="946" rx="7" fill="none" stroke="#C06A4B" stroke-opacity="0.35" stroke-width="1"/>
+  <path d="M16 76 H70 M570 76 H624 M16 924 H70 M570 924 H624" stroke="#C06A4B" stroke-opacity="0.55"/>
+  <path d="M44 54 L58 68 L44 82 L30 68 Z M596 54 L610 68 L596 82 L582 68 Z" fill="none" stroke="#C06A4B" stroke-opacity="0.55"/>
+
+  <text x="320" y="70" text-anchor="middle" fill="#C9D8EC" fill-opacity="0.72" font-family="Georgia, 'Times New Roman', serif" font-size="13" letter-spacing="6">TAROT EGIPCIO</text>
+  <path d="M92 94 H288 M352 94 H548" stroke="#C06A4B" stroke-opacity="0.35"/>
+  <circle cx="320" cy="94" r="3" fill="#C06A4B"/>
+
+  <g clip-path="url(#arch)">
+    <rect x="70" y="190" width="500" height="540" fill="#150C09"/>
+    <rect x="70" y="190" width="500" height="540" fill="url(#glow)"/>
+    <circle cx="131.3" cy="385.2" r="1.1" fill="#C06A4B" opacity="0.60"/><circle cx="112.9" cy="445.4" r="0.9" fill="#C06A4B" opacity="0.31"/><circle cx="380.7" cy="419.2" r="2.3" fill="#C06A4B" opacity="0.19"/><circle cx="522.3" cy="633.1" r="2.5" fill="#C06A4B" opacity="0.38"/><circle cx="470.3" cy="529.3" r="0.9" fill="#C06A4B" opacity="0.62"/><circle cx="250.3" cy="543.0" r="0.9" fill="#C06A4B" opacity="0.34"/><circle cx="130.9" cy="483.2" r="1.3" fill="#C06A4B" opacity="0.63"/><circle cx="499.1" cy="485.3" r="0.8" fill="#C06A4B" opacity="0.36"/><circle cx="96.8" cy="624.6" r="2.2" fill="#C06A4B" opacity="0.64"/><circle cx="343.8" cy="634.3" r="1.5" fill="#C06A4B" opacity="0.28"/><circle cx="222.2" cy="239.7" r="2.0" fill="#C06A4B" opacity="0.58"/><circle cx="429.8" cy="462.7" r="2.8" fill="#C06A4B" opacity="0.32"/><circle cx="442.5" cy="681.7" r="0.9" fill="#C06A4B" opacity="0.21"/><circle cx="530.1" cy="354.9" r="1.9" fill="#C06A4B" opacity="0.28"/><circle cx="162.5" cy="675.7" r="1.2" fill="#C06A4B" opacity="0.46"/><circle cx="142.0" cy="210.7" r="0.9" fill="#C06A4B" opacity="0.55"/><circle cx="510.3" cy="459.7" r="1.0" fill="#C06A4B" opacity="0.25"/><circle cx="255.1" cy="284.5" r="1.3" fill="#C06A4B" opacity="0.60"/><circle cx="229.7" cy="571.1" r="1.1" fill="#C06A4B" opacity="0.66"/><circle cx="111.7" cy="606.6" r="2.0" fill="#C06A4B" opacity="0.29"/><circle cx="263.6" cy="574.3" r="1.2" fill="#C06A4B" opacity="0.46"/><circle cx="345.8" cy="506.9" r="1.1" fill="#C06A4B" opacity="0.29"/><circle cx="472.8" cy="481.8" r="2.7" fill="#C06A4B" opacity="0.32"/><circle cx="242.1" cy="327.6" r="1.2" fill="#C06A4B" opacity="0.72"/><circle cx="286.4" cy="366.0" r="0.9" fill="#C06A4B" opacity="0.35"/><circle cx="457.6" cy="343.4" r="2.0" fill="#C06A4B" opacity="0.54"/><circle cx="545.6" cy="444.2" r="1.0" fill="#C06A4B" opacity="0.42"/><circle cx="113.7" cy="634.3" r="1.8" fill="#C06A4B" opacity="0.53"/><circle cx="541.7" cy="379.5" r="0.9" fill="#C06A4B" opacity="0.72"/><circle cx="386.3" cy="449.7" r="1.0" fill="#C06A4B" opacity="0.33"/><circle cx="455.0" cy="579.1" r="2.3" fill="#C06A4B" opacity="0.72"/><circle cx="314.3" cy="562.6" r="0.9" fill="#C06A4B" opacity="0.48"/><circle cx="539.5" cy="505.9" r="2.5" fill="#C06A4B" opacity="0.41"/><circle cx="297.9" cy="529.1" r="1.7" fill="#C06A4B" opacity="0.22"/><circle cx="367.6" cy="310.9" r="1.9" fill="#C06A4B" opacity="0.29"/><circle cx="305.7" cy="512.4" r="0.9" fill="#C06A4B" opacity="0.58"/><circle cx="121.0" cy="509.7" r="1.7" fill="#C06A4B" opacity="0.56"/><circle cx="329.0" cy="425.5" r="1.3" fill="#C06A4B" opacity="0.54"/><circle cx="460.4" cy="614.7" r="1.0" fill="#C06A4B" opacity="0.65"/><circle cx="326.1" cy="295.5" r="1.7" fill="#C06A4B" opacity="0.60"/><circle cx="373.5" cy="625.9" r="1.8" fill="#C06A4B" opacity="0.28"/><circle cx="294.2" cy="432.0" r="1.9" fill="#C06A4B" opacity="0.70"/><circle cx="488.6" cy="473.3" r="1.5" fill="#C06A4B" opacity="0.32"/><circle cx="210.9" cy="363.4" r="2.0" fill="#C06A4B" opacity="0.25"/><circle cx="246.9" cy="606.9" r="1.9" fill="#C06A4B" opacity="0.46"/><circle cx="349.3" cy="370.0" r="2.1" fill="#C06A4B" opacity="0.49"/>
+    <g transform="translate(320 452) rotate(-6)" opacity="0.98">
+      <circle cx="0" cy="0" r="206" fill="none" stroke="#C06A4B" stroke-opacity="0.28"/>
+      <circle cx="0" cy="0" r="188" fill="none" stroke="#C06A4B" stroke-opacity="0.5" stroke-dasharray="2 10"/>
+      <circle cx="0" cy="0" r="150" fill="none" stroke="#C9D8EC" stroke-opacity="0.22"/>
+      <path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(0)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(15)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(30)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(45)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(60)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(75)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(90)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(105)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(120)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(135)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(150)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(165)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(180)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(195)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(210)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(225)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(240)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(255)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(270)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(285)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(300)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.75" stroke-width="2" transform="rotate(315)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(330)"/><path d="M0 -198 V-212" stroke="#C06A4B" stroke-opacity="0.3" stroke-width="1" transform="rotate(345)"/>
+      <circle cx="0" cy="0" r="126" fill="#150C09" fill-opacity="0.55" stroke="#C06A4B" stroke-opacity="0.35"/>
+      <g stroke="#C06A4B" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-98 64 L-24 -54 L18 8 L48 -32 L98 64 Z"/>
+        <path d="M-66 22 L-24 -54 L8 -6" stroke="#C9D8EC" fill="none" stroke-width="2" opacity="0.6"/>
+        <circle cx="56" cy="-58" r="16" fill="#C06A4B" opacity="0.16"/>
+      </g>
+      <g transform="rotate(30) scale(1.12)" opacity="0.3">
+        <g stroke="#C9D8EC" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-98 64 L-24 -54 L18 8 L48 -32 L98 64 Z"/>
+        <path d="M-66 22 L-24 -54 L8 -6" stroke="#C9D8EC" fill="none" stroke-width="2" opacity="0.6"/>
+        <circle cx="56" cy="-58" r="16" fill="#C9D8EC" opacity="0.16"/>
+      </g>
+      </g>
+    </g>
+    <rect x="70" y="190" width="500" height="540" fill="url(#vignette)"/>
+    <g opacity="0.8">
+      <g transform="translate(104 300) scale(0.9230769230769231)" stroke="#C06A4B" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.55"><path d="M0 12 C-10 5 -10 -6 0 -13 C10 -6 10 5 0 12Z"/><path d="M-9 12 Q0 6 9 12"/></g>
+      <g transform="translate(104 390) scale(0.9230769230769231)" stroke="#C06A4B" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.4"><path d="M-12 8 C-2 8 -4 -4 4 -4 C10 -4 10 -12 6 -14"/><path d="M-12 8 Q-16 4 -12 0"/></g>
+      <g transform="translate(104 480) scale(0.9230769230769231)" stroke="#C06A4B" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.3"><path d="M0 -14 V14 M-10 -9 H10 M-10 -9 L-14 0 H-6 Z M10 -9 L6 0 H14 Z"/></g>
+      <g transform="translate(536 300) scale(0.9230769230769231)" stroke="#C06A4B" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.3"><path d="M-12 8 C-2 8 -4 -4 4 -4 C10 -4 10 -12 6 -14"/><path d="M-12 8 Q-16 4 -12 0"/></g>
+      <g transform="translate(536 390) scale(0.9230769230769231)" stroke="#C06A4B" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.4"><path d="M0 -14 V14 M-10 -9 H10 M-10 -9 L-14 0 H-6 Z M10 -9 L6 0 H14 Z"/></g>
+      <g transform="translate(536 480) scale(0.9230769230769231)" stroke="#C06A4B" fill="none" stroke-width="2" stroke-linecap="round" opacity="0.55"><path d="M0 12 C-10 5 -10 -6 0 -13 C10 -6 10 5 0 12Z"/><path d="M-9 12 Q0 6 9 12"/></g>
+    </g>
+    <path d="M70 706 H570" stroke="#C06A4B" stroke-opacity="0.5"/>
+  </g>
+  <path d="M70 730 V340 Q70 190 320 190 Q570 190 570 340 V730 Z" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+  <path d="M84 730 V344 Q84 206 320 206 Q556 206 556 344 V730" fill="none" stroke="#C06A4B" stroke-opacity="0.28"/>
+
+  <circle cx="320" cy="190" r="36" fill="#080B12" stroke="#C06A4B" stroke-width="2"/>
+  <circle cx="320" cy="190" r="28" fill="none" stroke="#C06A4B" stroke-opacity="0.4"/>
+  <text x="320" y="199" text-anchor="middle" fill="#C9D8EC" font-family="Georgia, 'Times New Roman', serif" font-size="25" letter-spacing="1">25</text>
+
+  <text x="320" y="776" text-anchor="middle" fill="#C06A4B" fill-opacity="0.9" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="4">ESCENA 25 · BASTOS</text>
+  <text x="320" y="822" text-anchor="middle" fill="#C9D8EC" font-family="Georgia, 'Times New Roman', serif" font-size="36" letter-spacing="1">El Argonauta</text>
+  
+  <path d="M220 848 H290 M350 848 H420" stroke="#C06A4B" stroke-opacity="0.55"/>
+  <path d="M320 842 L326 848 L320 854 L314 848 Z" fill="#C06A4B" opacity="0.8"/>
+  <text x="320" y="892" text-anchor="middle" fill="#C9D8EC" fill-opacity="0.6" font-family="Georgia, 'Times New Roman', serif" font-size="10" letter-spacing="3">ARCANA · BIBLIOTECA DE TAROT</text>
+
+  <rect width="640" height="1000" filter="url(#grain)" opacity="0.16"/>
+</svg>
