@@ -10,6 +10,7 @@ const columns = [
       { href: "/decks", label: "Todos los mazos" },
       { href: "/decks/tarot-egipcio", label: "Tarot Egipcio" },
       { href: "/decks/marseille", label: "Tarot de Marsella" },
+      { href: "/decks/rider-waite", label: "Rider-Waite-Smith" },
       { href: "/buscar", label: "Buscar cartas" },
     ],
   },

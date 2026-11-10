@@ -26,26 +26,26 @@ export function DeckExplorer({ deck, cards, initialCategory = "all" }: DeckExplo
     setCategory(initialCategory);
   }, [initialCategory]);
 
-  const isMarseille = deck.id === "marseille";
+  const hasSuits = deck.id === "marseille" || deck.id === "rider-waite";
 
   const categoryOptions = useMemo<Array<{ value: CategoryFilter; label: string }>>(
     () => [
       { value: "all", label: "Todas" },
       { value: "major", label: "Arcanos mayores" },
-      { value: "minor", label: isMarseille ? "Arcanos menores" : "Escenas menores" },
+      { value: "minor", label: hasSuits ? "Arcanos menores" : "Escenas menores" },
     ],
-    [isMarseille],
+    [hasSuits],
   );
 
   const seriesOptions = useMemo<Array<{ value: SeriesFilter; label: string }>>(
     () => [
-      { value: "all", label: isMarseille ? "Todos los palos" : "Todas las series" },
+      { value: "all", label: hasSuits ? "Todos los palos" : "Todas las series" },
       { value: "bastos", label: "Bastos" },
       { value: "copas", label: "Copas" },
       { value: "espadas", label: "Espadas" },
       { value: "oros", label: "Oros" },
     ],
-    [isMarseille],
+    [hasSuits],
   );
 
   const filtered = useMemo(() => {
@@ -63,7 +63,7 @@ export function DeckExplorer({ deck, cards, initialCategory = "all" }: DeckExplo
           card.series ?? "",
           card.category === "major"
             ? "arcano mayor"
-            : isMarseille
+            : hasSuits
               ? "arcano menor"
               : "escena menor",
           String(card.number),
@@ -71,7 +71,7 @@ export function DeckExplorer({ deck, cards, initialCategory = "all" }: DeckExplo
       );
       return needle.split(/\s+/).every((token) => haystack.includes(token));
     });
-  }, [cards, category, isMarseille, query, series]);
+  }, [cards, category, hasSuits, query, series]);
 
   const isFiltering = query.length > 0 || category !== "all" || series !== "all";
 

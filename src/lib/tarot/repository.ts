@@ -9,6 +9,7 @@ import type {
 import { decks } from "@/data/decks";
 import { egyptianCards, egyptianFeaturedIds } from "@/data/egyptian";
 import { marseilleCards, marseilleFeaturedIds } from "@/data/marseille";
+import { riderWaiteCards, riderWaiteFeaturedIds } from "@/data/rider-waite";
 import { normalizeText } from "@/lib/tarot/search";
 
 export interface CardQuery {
@@ -55,11 +56,13 @@ export interface TarotRepository {
 const cardsByDeck: Record<string, TarotCard[]> = {
   "tarot-egipcio": egyptianCards,
   marseille: marseilleCards,
+  "rider-waite": riderWaiteCards,
 };
 
 const featuredByDeck: Record<string, string[]> = {
   "tarot-egipcio": egyptianFeaturedIds,
   marseille: marseilleFeaturedIds,
+  "rider-waite": riderWaiteFeaturedIds,
 };
 
 export function toSummary(card: TarotCard): CardSummary {

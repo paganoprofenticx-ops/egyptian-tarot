@@ -26,7 +26,7 @@
   <rect x="20" y="20" width="760" height="1060" rx="12" fill="url(#glow)"/>
   <path d="M60 90 L80 110 L60 130 L40 110 Z M740 90 L760 110 L740 130 L720 110 Z M60 990 L80 1010 L60 1030 L40 1010 Z M740 990 L760 1010 L740 1030 L720 1010 Z" fill="none" stroke="#8FB3C9" stroke-opacity="0.6"/>
 
-  <text x="400" y="108" text-anchor="middle" fill="#E9E3D5" fill-opacity="0.7" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="8">PRÓXIMAMENTE</text>
+  <text x="400" y="108" text-anchor="middle" fill="#E9E3D5" fill-opacity="0.7" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="8">BARAJA COMPLETA</text>
   <path d="M170 132 H340 M460 132 H630" stroke="#8FB3C9" stroke-opacity="0.4"/>
   <circle cx="400" cy="132" r="3" fill="#8FB3C9"/>
 
@@ -46,7 +46,7 @@
   <text x="400" y="860" text-anchor="middle" fill="#8FB3C9" font-family="Georgia, 'Times New Roman', serif" font-size="19" font-style="italic">El clásico ilustrado</text>
   <path d="M240 894 H360 M440 894 H560" stroke="#8FB3C9" stroke-opacity="0.55"/>
   <path d="M400 884 L409 894 L400 904 L391 894 Z" fill="#8FB3C9" opacity="0.85"/>
-  <text x="400" y="944" text-anchor="middle" fill="#E9E3D5" fill-opacity="0.6" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="4">78 CARTAS · EN PREPARACIÓN</text>
+  <text x="400" y="944" text-anchor="middle" fill="#E9E3D5" fill-opacity="0.6" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="4">78 CARTAS · GUÍA DE ESTUDIO</text>
   <text x="400" y="1024" text-anchor="middle" fill="#8FB3C9" fill-opacity="0.7" font-family="Georgia, 'Times New Roman', serif" font-size="10" letter-spacing="5">ARCANA · BIBLIOTECA DE TAROT</text>
   <rect width="800" height="1100" filter="url(#grain)" opacity="0.15"/>
 </svg>

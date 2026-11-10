@@ -170,6 +170,9 @@ export function CardExperience({
 
   const isMajor = card.category === "major";
   const isMarseille = deck.id === "marseille";
+  const isRiderWaite = deck.id === "rider-waite";
+  const hasSuits = isMarseille || isRiderWaite;
+  const minorLabel = hasSuits ? "Arcano menor" : "Escena menor";
 
   return (
     <div className="pb-28 md:pb-10">
@@ -187,7 +190,7 @@ export function CardExperience({
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <span className="tag">
-              {isMajor ? "Arcano mayor" : isMarseille ? "Arcano menor" : "Escena menor"}
+              {isMajor ? "Arcano mayor" : minorLabel}
             </span>
             <span className="tag">
               {card.contentStatus === "complete" ? "Ficha completa" : "Síntesis didáctica"}
@@ -341,7 +344,7 @@ export function CardExperience({
           <div className="min-w-0">
             <header>
               <p className="eyebrow">
-                {isMajor ? "Arcano mayor" : isMarseille ? "Arcano menor" : "Escena menor"}
+                {isMajor ? "Arcano mayor" : minorLabel}
               </p>
               <h1 className="mt-3 font-display text-4xl leading-tight text-papyrus text-shadow-deep sm:text-5xl">
                 {card.name}
@@ -479,7 +482,7 @@ export function CardExperience({
                 {card.series ? (
                   <div className="mt-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
                     <p className="eyebrow-muted">
-                      {isMarseille ? "Palo y elemento" : "Serie de estudio"}
+                      {hasSuits ? "Palo y elemento" : "Serie de estudio"}
                     </p>
                     <p className="mt-2 text-sm text-papyrus">
                       {card.series === "bastos" && "Serie de Bastos"}
@@ -490,7 +493,9 @@ export function CardExperience({
                     <p className="mt-1 text-xs leading-5 text-papyrus-dim">
                       {isMarseille
                         ? "En el Tarot de Marsella cada palo reúne catorce arcanos menores, del As al Rey. La serie agrupa las cartas por palo y elemento."
-                        : "En la baraja egipcia las escenas menores no llevan palos impresos. Esta serie es una herramienta didáctica para agrupar temas y elementos."}
+                        : isRiderWaite
+                          ? "En el Rider-Waite-Smith cada palo reúne catorce arcanos menores, del As al Rey, y cada carta ilustra una escena. La serie agrupa las cartas por palo y elemento."
+                          : "En la baraja egipcia las escenas menores no llevan palos impresos. Esta serie es una herramienta didáctica para agrupar temas y elementos."}
                     </p>
                   </div>
                 ) : null}

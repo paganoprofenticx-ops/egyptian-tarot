@@ -1,0 +1,1458 @@
+import type { CardSeries, TarotCard } from "@/types/tarot";
+import manifest from "./cards.json";
+import {
+  capitalize,
+  lowerFirst,
+  numberDescriptions,
+  numberTitles,
+  reduceNumber,
+  riderWaiteImageFor,
+  riderWaiteMinorName,
+  resolveRiderWaiteColors,
+  seriesInfo,
+} from "./shared";
+
+interface MinorSeed {
+  n: number;
+  suit: CardSeries;
+  rank: number; // 1-14 (As=1, ... Rey=14)
+  scene: string;
+  essence: string;
+  shadow: string;
+  general: string;
+  message: string;
+  keywords: string[];
+  symbols: { title: string; description: string }[];
+  love: string;
+  work: string;
+  health: string;
+  personal: string;
+  advice: string;
+  colorKeys: string[];
+}
+
+const minorSeeds: MinorSeed[] = [
+  // BASTOS (Fuego) · 22-35
+  {
+    n: 22,
+    suit: "bastos",
+    rank: 1,
+    scene:
+      "Una mano sale de una nube y sostiene un basto con hojas, mientras abajo se alza un castillo sobre una colina.",
+    essence: "la chispa que inicia un proyecto",
+    shadow: "el impulso que se dispersa en mil fuegos",
+    general:
+      "El As de Bastos es el origen puro del elemento fuego: la idea que llega, la energía disponible antes de tomar forma. La mano que brota de la nube recuerda que la inspiración no se fabrica: se recibe y se cuida.",
+    message: "Una idea ha llegado. No la analices hasta apagarla: dale forma y ponla en movimiento.",
+    keywords: ["Inicio", "Inspiración", "Potencial", "Energía", "Proyecto"],
+    symbols: [
+      { title: "El basto brotado", description: "La energía viva que crece cuando encuentra dirección." },
+      { title: "La mano en la nube", description: "La inspiración como algo que se recibe y se agradece." },
+      { title: "El castillo", description: "El destino posible: la idea puede convertirse en estructura." },
+    ],
+    love: "Un flechazo, una atracción súbita o el deseo de comenzar algo nuevo. La chispa está ahí; falta el fuego.",
+    work: "Nueva propuesta, idea de negocio o proyecto que nace. El momento es de sembrar, no de cosechar.",
+    health: "Un estallido de vitalidad. Úsalo para iniciar un hábito, no para agotarte en un día.",
+    personal: "Reconoce cuándo la vida te entrega una semilla. Tu tarea es no dejarla secar.",
+    advice: "Escribe la idea que te ronda y da un paso concreto hoy. Aunque sea pequeño.",
+    colorKeys: ["crimson", "sunflower", "gold"],
+  },
+  {
+    n: 23,
+    suit: "bastos",
+    rank: 2,
+    scene:
+      "Un hombre de pie en la muralla de un castillo sostiene un globo terráqueo y un basto; otro basto está fijado a la pared. Mira el mar y las montañas.",
+    essence: "la visión que elige su dirección",
+    shadow: "la indecisión que se disfraza de planificación",
+    general:
+      "El Dos de Bastos habla de tener el mundo ante sí y el poder de elegir. La carta no pide acción inmediata: pide rumbo. La visión se vuelve estrategia cuando se decide qué se deja fuera.",
+    message: "Tienes el mapa y el bastón. Elige un rumbo y camina; el horizonte no se acerca solo.",
+    keywords: ["Planificación", "Visión", "Elección", "Dominio", "Espera activa"],
+    symbols: [
+      { title: "El globo terráqueo", description: "La amplitud de posibilidades y la responsabilidad de elegir una." },
+      { title: "El basto fijado", description: "La base que ya está puesta; no todo empieza de cero." },
+      { title: "La muralla", description: "La seguridad que permite mirar lejos sin caer." },
+    ],
+    love: "Una relación en la que se vislumbra futuro. Hay que decidir si se invierte en ella o se mantiene en la orilla.",
+    work: "Planificación estratégica, evaluación de oportunidades, decisión de expansión. No es momento de actuar: es de dirigir.",
+    health: "Buen momento para diseñar un plan de cuidado a largo plazo. La visión precede a la rutina.",
+    personal: "Distinguir entre soñar despierto y trazar un rumbo. Lo segundo requiere comprometerse.",
+    advice: "Define tres metas a seis meses y el primer paso para cada una. Elige una y empieza.",
+    colorKeys: ["crimson", "gold", "earth"],
+  },
+  {
+    n: 24,
+    suit: "bastos",
+    rank: 3,
+    scene:
+      "Un hombre de espaldas, en un acantilado, mira tres bastos clavados y varios barcos que navegan hacia el horizonte.",
+    essence: "la expansión que confía en lo sembrado",
+    shadow: "la impaciencia que no deja madurar los frutos",
+    general:
+      "El Tres de Bastos muestra la visión ya puesta en marcha: hay barcos, comercio, movimiento. La primera cosecha no está en la mano, pero ya navega. La carta habla de confiar en el proceso y en quienes colaboran con él.",
+    message: "Lo que sembraste empieza a moverse. Confía en el proceso y en quienes navegan por ti.",
+    keywords: ["Expansión", "Colaboración", "Comercio", "Paciencia", "Horizonte"],
+    symbols: [
+      { title: "Los tres bastos", description: "La estructura mínima que sostiene una empresa en marcha." },
+      { title: "Los barcos", description: "Los proyectos que ya partieron y regresarán con resultados." },
+      { title: "La mirada al horizonte", description: "La espera activa de quien sabe que no todo depende de sus manos." },
+    ],
+    love: "Una relación que se proyecta a futuro compartido. Pueden aparecer viajes, mudanzas o planes conjuntos.",
+    work: "Proyectos que escalan, socios que aportan, envíos que llegan. La expansión requiere confianza en el equipo.",
+    health: "Los resultados de tus cuidados empiezan a notarse. Mantén el ritmo sin apresurarte.",
+    personal: "Aprende a delegar y a celebrar lo que crece sin tu control directo.",
+    advice: "Identifica a quién confías parte de tu carga y agradécelo. La expansión se comparte.",
+    colorKeys: ["crimson", "gold", "sky"],
+  },
+  {
+    n: 25,
+    suit: "bastos",
+    rank: 4,
+    scene:
+      "Dos figuras celebran bajo un dosel de flores sostenido por cuatro bastos; al fondo, un castillo y gente reunida.",
+    essence: "la estabilidad que se celebra y se comparte",
+    shadow: "la comodidad que frena el siguiente paso",
+    general:
+      "El Cuatro de Bastos es la fiesta después del trabajo: el hogar, la comunidad, el logro que se comparte. La estructura sigue siendo de madera, no de piedra; la celebración es real, pero la base pide cuidado.",
+    message: "Celebra lo que has construido. El fuego que calienta también necesita leña.",
+    keywords: ["Hogar", "Celebración", "Estabilidad", "Comunidad", "Logro"],
+    symbols: [
+      { title: "El dosel de flores", description: "La belleza que corona un esfuerzo colectivo." },
+      { title: "Los cuatro bastos", description: "La estructura que sostiene la celebración y también la responsabilidad." },
+      { title: "El castillo", description: "El hogar como refugio y como proyecto compartido." },
+    ],
+    love: "Convivencia armónica, presentación en sociedad, boda o compromiso. El hogar se siente seguro.",
+    work: "Proyecto consolidado, inauguración, reconocimiento de equipo. Buen momento para afianzar lazos.",
+    health: "Bienestar sostenido. El cuerpo responde a la rutina. Disfruta la estabilidad sin volverla rígida.",
+    personal: "Reconoce tus logros y permítete el descanso merecido. La gratitud afianza lo conseguido.",
+    advice: "Organiza una pequeña celebración por algo que has completado. Incluye a quien te ayudó.",
+    colorKeys: ["sunflower", "gold", "rose"],
+  },
+  {
+    n: 26,
+    suit: "bastos",
+    rank: 5,
+    scene:
+      "Cinco jóvenes blanden bastos en una escena caótica. No hay sangre: hay forcejeo, competencia y egos que chocan.",
+    essence: "el conflicto que prueba la convicción",
+    shadow: "la pelea estéril que agota sin avanzar",
+    general:
+      "El Cinco de Bastos habla de la fricción necesaria cuando varias voluntades comparten un espacio. El conflicto puede clarificar o solo desgastar; la diferencia está en si se pelea por el vínculo o por tener razón.",
+    message: "No todo choque es una amenaza. A veces el roce saca chispas que iluminan.",
+    keywords: ["Conflicto", "Competición", "Caos", "Prueba", "Diferencias"],
+    symbols: [
+      { title: "Los bastos cruzados", description: "Energías que se enfrentan sin un propósito común." },
+      { title: "La ausencia de heridos", description: "El conflicto es de fuerzas, no de destrucción. Todavía hay margen." },
+      { title: "El terreno abierto", description: "El espacio compartido que nadie quiere ceder." },
+    ],
+    love: "Roces, celos, discusiones por tonterías. Pregúntate si peleas por el vínculo o por tener razón.",
+    work: "Competencia interna, opiniones enfrentadas, ambiente tenso. Define reglas de juego claras.",
+    health: "Estrés por exceso de demandas. El cuerpo pide pausa, no más fuerza.",
+    personal: "Distinguir entre defender tu posición y reaccionar por orgullo. El ego no es la convicción.",
+    advice: "En el próximo roce, para y pregunta: ¿qué estoy defendiendo realmente? ¿Vale la pena?",
+    colorKeys: ["crimson", "earth", "gold"],
+  },
+  {
+    n: 27,
+    suit: "bastos",
+    rank: 6,
+    scene:
+      "Un jinete con un basto coronado de laurel avanza entre una multitud que también porta bastos. Lleva casco y capa.",
+    essence: "la victoria que se reconoce y se comparte",
+    shadow: "el orgullo que necesita aplausos para sostenerse",
+    general:
+      "El Seis de Bastos es el reconocimiento público de un esfuerzo. La carta muestra el momento en que el trabajo se ve, pero también recuerda que la victoria verdadera sigue caminando después del aplauso.",
+    message: "Has ganado esta ronda. Recibe el reconocimiento y sigue; la meta no era el aplauso.",
+    keywords: ["Victoria", "Reconocimiento", "Éxito", "Liderazgo", "Avance"],
+    symbols: [
+      { title: "El basto con laurel", description: "El logro que se corona, pero que sigue siendo una herramienta." },
+      { title: "La multitud", description: "El contexto social que reconoce el esfuerzo y también lo condiciona." },
+      { title: "El caballo", description: "La energía que avanza; la victoria no detiene el camino." },
+    ],
+    love: "Una relación que se muestra con orgullo, o un cortejo que tiene éxito. La visibilidad favorece.",
+    work: "Ascenso, premio, proyecto visible. El liderazgo se ejerce con el ejemplo, no con la pose.",
+    health: "Energía alta y visible. Buen momento para metas deportivas o recuperación notoria.",
+    personal: "Disfruta el logro sin adueñarte de él. La victoria es un paso, no un pedestal.",
+    advice: "Comparte tu éxito con alguien que te vio empezar. La gratitud multiplica la victoria.",
+    colorKeys: ["gold", "crimson", "sunflower"],
+  },
+  {
+    n: 28,
+    suit: "bastos",
+    rank: 7,
+    scene:
+      "Una figura en terreno elevado sostiene un basto frente a seis que se alzan desde abajo. Tiene la ventaja de la altura.",
+    essence: "la posición que se defiende desde la altura",
+    shadow: "la rigidez que confunde firmeza con arrogancia",
+    general:
+      "El Siete de Bastos habla de mantener lo conseguido y defender límites cuando otros los cuestionan. No es ataque: es resistencia consciente. La altura da perspectiva, pero también aislamiento.",
+    message: "Tienes la altura. No bajes a pelear en sus términos; haz que suban a los tuyos.",
+    keywords: ["Defensa", "Posición", "Límites", "Resistencia", "Convicción"],
+    symbols: [
+      { title: "La altura", description: "La ventaja de quien ya recorrió parte del camino." },
+      { title: "Los seis bastos", description: "Las demandas externas que presionan sin tregua." },
+      { title: "El basto en guardia", description: "La firmeza que no necesita atacar para sostener su lugar." },
+    ],
+    love: "Necesidad de poner límites claros. Defiende lo que valoras sin atacar al otro.",
+    work: "Defensa de un proyecto, postura frente a críticas, negociación desde la fortaleza. No cedas lo esencial.",
+    health: "El sistema inmune activo. Cuida tus fronteras: descanso, alimentación, límites emocionales.",
+    personal: "Revisa qué principios no negocias. La firmeza nace de saber qué defiendes.",
+    advice: "Escribe una frontera que necesitas sostener y practica decirla sin justificarte.",
+    colorKeys: ["crimson", "earth", "gold"],
+  },
+  {
+    n: 29,
+    suit: "bastos",
+    rank: 8,
+    scene:
+      "Ocho bastos vuelan en paralelo por el cielo sobre un paisaje abierto. No hay figuras: solo movimiento.",
+    essence: "la velocidad que llega cuando todo se alinea",
+    shadow: "la prisa que confunde velocidad con dirección",
+    general:
+      "El Ocho de Bastos es la carta de la rapidez, los mensajes y los acontecimientos que se precipitan. La energía encontró su cauce; la tarea es apuntar bien antes de soltar.",
+    message: "Las cosas se mueven rápido. No intentes controlarlo todo: apunta y suelta.",
+    keywords: ["Velocidad", "Mensajes", "Movimiento", "Alineación", "Precipitación"],
+    symbols: [
+      { title: "Los bastos en vuelo", description: "La energía que se desplaza sin obstáculos visibles." },
+      { title: "El cielo abierto", description: "El espacio para que las cosas ocurran sin resistencia." },
+      { title: "El paisaje quieto", description: "El contraste entre el movimiento externo y la calma del suelo." },
+    ],
+    love: "Mensajes, encuentros súbitos, aceleración del vínculo. Disfruta el ritmo sin perder el norte.",
+    work: "Comunicaciones rápidas, envíos, decisiones que se encadenan. La eficiencia está en la dirección, no en la rapidez.",
+    health: "Pico de energía. Úsalo para avanzar, no para agotarte. El cuerpo también tiene sus tiempos.",
+    personal: "Cuando todo fluye, la tentación es querer más. La maestría sabe cuándo parar.",
+    advice: "Hoy, actúa sobre lo que llega sin demorar. La ventana de velocidad no dura siempre.",
+    colorKeys: ["crimson", "sunflower", "sky"],
+  },
+  {
+    n: 30,
+    suit: "bastos",
+    rank: 9,
+    scene:
+      "Una figura vendada se apoya en un basto; detrás, otros ocho forman una empalizada. Ha sido herida pero sigue en pie.",
+    essence: "la resistencia que ya ha pasado lo peor",
+    shadow: "el cansancio que se disfraza de fortaleza",
+    general:
+      "El Nueve de Bastos es la resistencia curtida: quien conoce el costo de sostenerse y no se rinde. La valla de bastos atrás es el historial de batallas; cada una enseñó a pararse mejor.",
+    message: "Estás herido pero en pie. Esa es tu fuerza: no la perfección, la persistencia.",
+    keywords: ["Resistencia", "Experiencia", "Cicatriz", "Última prueba", "Fortaleza"],
+    symbols: [
+      { title: "La venda", description: "La herida que no se oculta y que tampoco define." },
+      { title: "La empalizada", description: "La experiencia acumulada como protección y como límite." },
+      { title: "El basto de apoyo", description: "La ayuda que se acepta sin perder autonomía." },
+    ],
+    love: "Una relación que ha pasado crisis y sigue. Las cicatrices son prueba de que se cuidó.",
+    work: "Última resistencia antes de un logro. No abandones ahora: revisa cuánto has avanzado.",
+    health: "El cuerpo pide recuperación, no más esfuerzo. La fortaleza también incluye descansar.",
+    personal: "Honra tus cicatrices sin convertirlas en identidad. Has sobrevivido; ahora toca reparar.",
+    advice: "Haz una pausa real antes de la siguiente batalla. La resistencia también se entrena descansando.",
+    colorKeys: ["crimson", "earth", "gold"],
+  },
+  {
+    n: 31,
+    suit: "bastos",
+    rank: 10,
+    scene:
+      "Una figura carga un haz de diez bastos y camina hacia un pueblo. El peso le impide ver el camino con claridad.",
+    essence: "la carga que se lleva por responsabilidad",
+    shadow: "la sobrecarga que se confunde con compromiso",
+    general:
+      "El Diez de Bastos habla de asumir demasiado. La meta está cerca, pero el peso oculta la vista. La carta no condena la responsabilidad: pide distinguir lo que te corresponde de lo que estás cargando por costumbre.",
+    message: "No todo el peso es tuyo. Suelta lo que puedes delegar antes de llegar agotado.",
+    keywords: ["Carga", "Responsabilidad", "Esfuerzo", "Límite", "Culminación"],
+    symbols: [
+      { title: "El haz de bastos", description: "Los compromisos acumulados que ya no caben en dos manos." },
+      { title: "La espalda inclinada", description: "El cuerpo que sostiene lo que la mente no quiere soltar." },
+      { title: "El pueblo cercano", description: "La meta posible, si se llega con algo de energía para vivirla." },
+    ],
+    love: "Una relación que pesa por exceso de responsabilidades. Reparte la carga y habla de lo que agota.",
+    work: "Sobrecarga, plazos y tareas acumuladas. Prioriza y pide ayuda antes de llegar al límite.",
+    health: "La espalda y el cansancio piden atención. El cuerpo no es una herramienta infinita.",
+    personal: "Aprende a distinguir entre compromiso y martirio. La responsabilidad también incluye cuidarte.",
+    advice: "Haz una lista de lo que cargas y marca lo que no te corresponde. Suelta una cosa hoy.",
+    colorKeys: ["earth", "crimson", "gold"],
+  },
+  {
+    n: 32,
+    suit: "bastos",
+    rank: 11,
+    scene:
+      "Una figura joven, de pie en un paisaje desértico, sostiene un basto con ambas manos y mira la punta con curiosidad. Su túnica lleva salamandras.",
+    essence: "el entusiasmo que explora sin miedo",
+    shadow: "la impaciencia que enciende fuegos sin continuidad",
+    general:
+      "La Sota de Bastos trae una chispa nueva: curiosidad, ganas de probar, una idea que pide movimiento. No tiene la experiencia del Rey, pero tiene algo que la experiencia no puede fabricar: deseo de empezar.",
+    message: "La curiosidad es una forma de inteligencia. Prueba, falla y vuelve a intentarlo.",
+    keywords: ["Entusiasmo", "Curiosidad", "Exploración", "Idea", "Impulso"],
+    symbols: [
+      { title: "El basto sostenido", description: "La idea que se toma con las dos manos, todavía sin saber adónde llevará." },
+      { title: "Las salamandras", description: "El fuego que se regenera; la capacidad de renacer del error." },
+      { title: "El desierto", description: "El terreno vacío donde todo está por inventarse." },
+    ],
+    love: "Atracción fresca y ganas de conquistar. La carta favorece los gestos espontáneos y la honestidad.",
+    work: "Nuevas ideas, aprendizaje, primer empleo o proyecto que entusiasma. Aprende haciendo.",
+    health: "Energía joven y ganas de moverse. Canalízalas con algún hábito concreto.",
+    personal: "Recupera la curiosidad sin exigirte maestría inmediata. El entusiasmo también se cuida.",
+    advice: "Elige una idea que te entusiasme y prueba una versión pequeña esta semana.",
+    colorKeys: ["crimson", "sunflower", "sky"],
+  },
+  {
+    n: 33,
+    suit: "bastos",
+    rank: 12,
+    scene:
+      "Un caballero sobre un caballo encabritado avanza por un paisaje árido. Lleva un basto en la mano y su capa ondea.",
+    essence: "la aventura que se lanza hacia lo desconocido",
+    shadow: "la impulsividad que atropella sin mirar",
+    general:
+      "El Caballero de Bastos es acción pura: viaje, riesgo, conquista. Su energía abre caminos, pero también puede dejar atrás lo que necesitaba cuidado. La carta invita a moverse con coraje y con dirección.",
+    message: "El camino se abre para quien se mueve. Pero no confundas velocidad con destino.",
+    keywords: ["Aventura", "Acción", "Viaje", "Coraje", "Riesgo"],
+    symbols: [
+      { title: "El caballo encabritado", description: "La energía que se desborda y pide ser dirigida." },
+      { title: "El basto en alto", description: "La voluntad de avanzar con un propósito visible." },
+      { title: "El paisaje árido", description: "El desafío que no ofrece comodidad, pero sí camino." },
+    ],
+    love: "Pasión intensa y aventura. Puede ser un amor que llega rápido; disfrútalo sin prometer más de lo que puedes.",
+    work: "Viajes, expansión, iniciativa y proyectos que requieren coraje. Actúa, pero revisa el rumbo.",
+    health: "Alta energía y riesgo de exceso. Canaliza el impulso con movimiento consciente.",
+    personal: "Aprende a sostener lo que empiezas. La aventura también necesita raíces.",
+    advice: "Antes de lanzarte, define una señal de rumbo. Después, muévete con decisión.",
+    colorKeys: ["crimson", "earth", "sunflower"],
+  },
+  {
+    n: 34,
+    suit: "bastos",
+    rank: 13,
+    scene:
+      "Una reina sentada en un trono con girasoles y leones sostiene un basto y un girasol. A sus pies, un gato negro.",
+    essence: "el magnetismo que confía en su propio fuego",
+    shadow: "la necesidad de controlar la atención ajena",
+    general:
+      "La Reina de Bastos combina carisma, creatividad y presencia. No pide permiso para brillar, pero tampoco necesita dominar. Su fuerza está en habitar su deseo con dignidad y en contagiar confianza.",
+    message: "Tu fuego no necesita disculparse. Muéstralo con generosidad y sin invadir a nadie.",
+    keywords: ["Magnetismo", "Confianza", "Creatividad", "Presencia", "Deseo"],
+    symbols: [
+      { title: "El girasol", description: "La alegría que se orienta hacia la luz y la comparte." },
+      { title: "El gato negro", description: "La intuición independiente que no se deja domesticar del todo." },
+      { title: "El trono de leones", description: "La autoridad que nace de la vitalidad, no del miedo." },
+    ],
+    love: "Atracción magnética y deseo de ser vista. La carta favorece la seducción honesta y la autoestima.",
+    work: "Liderazgo creativo, visibilidad y proyectos que necesitan carisma. Confía en tu estilo.",
+    health: "Vitalidad alta. Cuida el exceso de exigencia y date espacios de disfrute real.",
+    personal: "Reconoce tu poder de atraer sin manipular. La confianza también se cultiva.",
+    advice: "Haz algo que te haga sentir luminosa y compártelo sin pedir aprobación.",
+    colorKeys: ["sunflower", "crimson", "gold"],
+  },
+  {
+    n: 35,
+    suit: "bastos",
+    rank: 14,
+    scene:
+      "Un rey sentado en un trono decorado con leones y salamandras sostiene un basto. A su lado, una pequeña salamandra muerde su mano.",
+    essence: "el liderazgo que convierte la visión en dirección",
+    shadow: "la ambición que se vuelve imposición",
+    general:
+      "El Rey de Bastos es el fuego maduro: visión, decisión y capacidad de inspirar. No necesita levantar la voz para ser seguido; su presencia ordena la energía del grupo. La carta habla de asumir el mando de un proyecto o de la propia vida.",
+    message: "Tu visión necesita una dirección clara. Lidera con el ejemplo y sostén lo que enciendes.",
+    keywords: ["Liderazgo", "Visión", "Autoridad", "Emprendimiento", "Dirección"],
+    symbols: [
+      { title: "El trono de leones", description: "La autoridad que se apoya en el coraje y la dignidad." },
+      { title: "La salamandra", description: "El fuego que se transforma y se renueva; la capacidad de resistir." },
+      { title: "El basto real", description: "La voluntad convertida en proyecto colectivo." },
+    ],
+    love: "Una relación con iniciativa y proyecto compartido. La carta favorece la claridad y la generosidad.",
+    work: "Liderazgo, emprendimiento y decisiones de expansión. Asume el mando sin atropellar.",
+    health: "Buena vitalidad, pero cuidado con el desgaste por exceso de responsabilidad.",
+    personal: "Tu fuego puede inspirar o imponer. Elige inspirar y deja espacio a otros.",
+    advice: "Define una visión concreta para los próximos tres meses y compártela con tu equipo.",
+    colorKeys: ["crimson", "gold", "earth"],
+  },
+  // COPAS (Agua) · 36-49
+  {
+    n: 36,
+    suit: "copas",
+    rank: 1,
+    scene:
+      "Una mano sale de una nube y sostiene una copa de la que brotan cinco chorros de agua; una paloma desciende con una hostia en el pico y los nenúfares cubren la superficie.",
+    essence: "la apertura del corazón que recibe",
+    shadow: "la sensibilidad que se desborda sin cauce",
+    general:
+      "El As de Copas es el nacimiento del mundo emocional: la capacidad de recibir, sentir y dejarse afectar. La copa no se llena por esfuerzo, se llena por apertura. El agua que brota recuerda que lo que se recibe también está destinado a circular.",
+    message: "Hay algo que quiere entrar en tu vida. Abre espacio antes de intentar controlarlo.",
+    keywords: ["Apertura", "Emoción", "Receptividad", "Amor", "Intuición"],
+    symbols: [
+      { title: "La copa colmada", description: "La emoción que se recibe y se ofrece sin quedarse estancada." },
+      { title: "La paloma", description: "El mensaje del corazón que llega cuando la mente calla." },
+      { title: "Los nenúfares", description: "La belleza que crece en aguas profundas y quietas." },
+    ],
+    love: "Un nuevo sentimiento, una apertura afectiva o el inicio de un vínculo que conmueve. Déjate sentir sin exigir garantías.",
+    work: "Un proyecto que nace del entusiasmo o de una vocación. La motivación emocional también es un recurso.",
+    health: "El cuerpo pide hidratación, descanso y ternura. Las emociones reprimidas también se somatizan.",
+    personal: "Reconoce lo que te conmueve. La sensibilidad no es debilidad: es información.",
+    advice: "Escribe qué emoción ha estado pidiendo espacio y dale un cauce concreto: hablar, llorar, crear.",
+    colorKeys: ["sky", "silver", "rose"],
+  },
+  {
+    n: 37,
+    suit: "copas",
+    rank: 2,
+    scene:
+      "Un hombre y una mujer se miran y se ofrecen una copa cada uno. Sobre ellos flota el caduceo de Hermes con una cabeza de león y alas.",
+    essence: "el encuentro que reconoce al otro",
+    shadow: "la idealización que ignora las diferencias",
+    general:
+      "El Dos de Copas es el pacto del corazón: dos personas que se eligen y se reconocen. No habla de fusión, sino de reciprocidad. Cada uno sostiene su copa; el vínculo nace del intercambio, no de la disolución.",
+    message: "Un encuentro verdadero requiere dos personas enteras. Ofrece tu copa sin vaciarte.",
+    keywords: ["Vínculo", "Reciprocidad", "Acuerdo", "Atracción", "Reconciliación"],
+    symbols: [
+      { title: "Las dos copas", description: "El intercambio equilibrado: dar y recibir en la misma mesa." },
+      { title: "El caduceo", description: "La armonía entre fuerzas opuestas que se complementan." },
+      { title: "La mirada", description: "El reconocimiento que convierte dos historias en un diálogo." },
+    ],
+    love: "Encuentro significativo, reconciliación o compromiso. La clave está en la reciprocidad, no en la fusión.",
+    work: "Sociedad, alianza o colaboración que funciona. Busca acuerdos claros y beneficios compartidos.",
+    health: "Equilibrio emocional que favorece la recuperación. El apoyo de otros también sana.",
+    personal: "Aprende a vincularte sin perderte. La cercanía sana respeta el centro de cada uno.",
+    advice: "Expresa a alguien lo que valoras de su presencia. El vínculo se sostiene con palabras concretas.",
+    colorKeys: ["rose", "sky", "gold"],
+  },
+  {
+    n: 38,
+    suit: "copas",
+    rank: 3,
+    scene:
+      "Tres mujeres bailan en círculo y alzan sus copas en un jardín, bajo un cielo claro. A sus pies hay frutos y calabazas, señal de cosecha.",
+    essence: "la alegría que se comparte",
+    shadow: "la celebración que evade lo pendiente",
+    general:
+      "El Tres de Copas celebra la amistad, la comunidad y la alegría compartida. La cosecha está presente: hay algo que se ha ganado y merece festejarse. La carta recuerda que el bienestar también se construye en compañía.",
+    message: "La alegría no se gasta al compartirla. Celebra con quienes te quieren bien.",
+    keywords: ["Amistad", "Celebración", "Comunidad", "Gratitud", "Cosecha"],
+    symbols: [
+      { title: "Las tres copas", description: "El brindis que sella un vínculo y reconoce un logro común." },
+      { title: "El círculo de baile", description: "La comunidad que sostiene y devuelve energía." },
+      { title: "Los frutos", description: "La cosecha que se disfruta mejor cuando se reparte." },
+    ],
+    love: "Un vínculo que se disfruta en compañía, amistades que se vuelven familia o una relación que celebra.",
+    work: "Buen ambiente de equipo, reconocimiento grupal o un proyecto que se disfruta. Cuida la colaboración.",
+    health: "El bienestar se contagia. Rodéate de personas que sumen y celebra los pequeños avances.",
+    personal: "Permítete disfrutar sin culpa. La alegría también es una forma de cuidado.",
+    advice: "Reúne a dos o tres personas que quieras y celebra algo sencillo. Sin motivo especial.",
+    colorKeys: ["sunflower", "rose", "emerald"],
+  },
+  {
+    n: 39,
+    suit: "copas",
+    rank: 4,
+    scene:
+      "Un joven sentado bajo un árbol cruza los brazos y mira tres copas en el suelo. Una cuarta copa le ofrece una mano que sale de una nube.",
+    essence: "la pausa que necesita mirar de nuevo",
+    shadow: "la apatía que confunde saciedad con vacío",
+    general:
+      "El Cuatro de Copas muestra el momento en que algo se ha vuelto invisible por costumbre. No es ingratitud: es saturación. La copa ofrecida sigue ahí, pero el joven no la ve. La carta invita a distinguir entre el descanso necesario y la desconexión.",
+    message: "Puede que lo que buscas ya esté frente a ti. Levanta la mirada antes de decir que no hay nada.",
+    keywords: ["Apatía", "Pausa", "Saturación", "Oportunidad", "Introspección"],
+    symbols: [
+      { title: "Los brazos cruzados", description: "La postura de quien se protege incluso de lo bueno." },
+      { title: "La copa ofrecida", description: "La oportunidad que llega por un camino que no estabas mirando." },
+      { title: "El árbol", description: "La necesidad de raíces y silencio antes de volver a moverte." },
+    ],
+    love: "Distancia emocional o desinterés momentáneo. Antes de concluir que no hay amor, revisa qué estás esperando.",
+    work: "Desmotivación o rutina. Puede haber una propuesta nueva que estás descartando por cansancio.",
+    health: "El cuerpo pide pausa real. La apatía también puede ser una señal de agotamiento.",
+    personal: "Distingue entre descansar y desconectarte. La mirada cansada no siempre ve con claridad.",
+    advice: "Haz una pausa breve y luego mira de nuevo tu situación. Anota una oportunidad que hayas ignorado.",
+    colorKeys: ["emerald", "earth", "silver"],
+  },
+  {
+    n: 40,
+    suit: "copas",
+    rank: 5,
+    scene:
+      "Una figura envuelta en una capa negra mira tres copas derramadas. Detrás de ella quedan dos copas en pie; al fondo, un río, un puente y un castillo.",
+    essence: "el duelo que aún puede elegir",
+    shadow: "la nostalgia que impide ver lo que queda",
+    general:
+      "El Cinco de Copas es la carta de la pérdida y del arrepentimiento. El dolor es real y merece su tiempo, pero la imagen también muestra lo que sigue en pie: dos copas, un puente, un camino de vuelta. La pena no niega la posibilidad.",
+    message: "Llora lo que se derramó. Después, mira las copas que siguen en pie.",
+    keywords: ["Pérdida", "Duelo", "Arrepentimiento", "Resiliencia", "Memoria"],
+    symbols: [
+      { title: "Las copas derramadas", description: "Lo que se perdió y no se puede recuperar tal como era." },
+      { title: "Las dos copas en pie", description: "Lo que permanece y espera ser visto." },
+      { title: "El puente", description: "El camino posible hacia el otro lado de la pena." },
+    ],
+    love: "Una ruptura, una decepción o la nostalgia de algo que fue. El duelo es necesario, pero no es el final.",
+    work: "Un proyecto que no salió como esperabas. Revisa lo aprendido y lo que aún puedes salvar.",
+    health: "La tristeza afecta al cuerpo. Permite el descanso y busca apoyo sin aislarte.",
+    personal: "Honra lo perdido sin quedarte a vivir en la pérdida. La gratitud convive con el dolor.",
+    advice: "Escribe qué perdiste y qué conservas. Después, da un paso pequeño hacia lo que sigue.",
+    colorKeys: ["black", "indigo", "silver"],
+  },
+  {
+    n: 41,
+    suit: "copas",
+    rank: 6,
+    scene:
+      "Dos niños juegan en un jardín; el mayor ofrece al pequeño una copa con una flor blanca. Al fondo se ve una casa antigua y un camino.",
+    essence: "la memoria que devuelve ternura",
+    shadow: "el refugio en un pasado idealizado",
+    general:
+      "El Seis de Copas es la nostalgia amable: los recuerdos que devuelven calidez y la inocencia que todavía puede enseñar algo. La carta no pide volver atrás, sino recuperar lo que el pasado tiene de nutritivo para el presente.",
+    message: "El pasado puede ser una fuente, no una casa. Toma lo que te nutre y sigue caminando.",
+    keywords: ["Nostalgia", "Inocencia", "Recuerdos", "Ternura", "Reencuentro"],
+    symbols: [
+      { title: "La copa con la flor", description: "El gesto sencillo que ofrece belleza sin pedir nada." },
+      { title: "Los niños", description: "La parte de ti que todavía sabe jugar y confiar." },
+      { title: "La casa antigua", description: "El origen que sostiene, aunque ya no sea el lugar donde vives." },
+    ],
+    love: "Reencuentro con alguien del pasado o un vínculo que recupera ternura. Distingue amor de nostalgia.",
+    work: "Un proyecto que retoma una pasión antigua o una colaboración que nace de la confianza.",
+    health: "El descanso y los recuerdos gratos favorecen la recuperación. Cuida la melancolía excesiva.",
+    personal: "Recupera una actividad que te hacía feliz de niño. La alegría simple también es medicina.",
+    advice: "Llama a alguien que te conozca desde hace tiempo o revisa una foto que te devuelva calidez.",
+    colorKeys: ["rose", "ivory", "emerald"],
+  },
+  {
+    n: 42,
+    suit: "copas",
+    rank: 7,
+    scene:
+      "Una silueta mira siete copas suspendidas en nubes. Cada una contiene una visión distinta: un castillo, joyas, una corona de laurel, un dragón, una serpiente, una figura velada y una cabeza.",
+    essence: "la imaginación que ofrece caminos",
+    shadow: "la fantasía que sustituye la elección",
+    general:
+      "El Siete de Copas es el territorio de las posibilidades y también de la confusión. La imaginación abre puertas, pero cuando todo parece posible, elegir se vuelve difícil. La carta pide distinguir entre el sueño que orienta y el que solo entretiene.",
+    message: "No todas las opciones son caminos. Elige una y descubre qué hay detrás de la imagen.",
+    keywords: ["Opciones", "Imaginación", "Ilusión", "Elección", "Desconcierto"],
+    symbols: [
+      { title: "Las siete copas", description: "Las posibilidades que compiten por tu atención." },
+      { title: "Las nubes", description: "La niebla que embellece lo que aún no se ha probado." },
+      { title: "La silueta", description: "El observador que debe pasar de soñar a decidir." },
+    ],
+    love: "Idealización, varias opciones o dudas sobre lo que realmente quieres. Contrasta la fantasía con los hechos.",
+    work: "Muchas ideas y poca concreción. Elige un proyecto y valida su viabilidad antes de invertir más.",
+    health: "La mente dispersa agota. Reduce estímulos y vuelve a lo básico: sueño, comida, movimiento.",
+    personal: "La imaginación es un don cuando se convierte en plan. Pregúntate qué estás dispuesto a sostener.",
+    advice: "Escribe tus opciones y elimina las que no estás dispuesto a sostener con hechos. Quédate con una.",
+    colorKeys: ["violet", "sky", "silver"],
+  },
+  {
+    n: 43,
+    suit: "copas",
+    rank: 8,
+    scene:
+      "Una figura de espaldas camina hacia las montañas bajo una luna creciente. Deja atrás ocho copas apiladas y un terreno pantanoso.",
+    essence: "la renuncia que busca sentido",
+    shadow: "la huida que no ha entendido lo que deja",
+    general:
+      "El Ocho de Copas habla de marcharse aunque no haya un desastre visible. A veces lo que se abandona es una vida correcta pero vacía. La carta no juzga la huida: pide que la partida tenga una dirección y no solo un impulso.",
+    message: "Irte también es una forma de elegir. Antes de caminar, sabe qué estás buscando.",
+    keywords: ["Renuncia", "Búsqueda", "Partida", "Desencanto", "Dirección"],
+    symbols: [
+      { title: "Las ocho copas", description: "Lo que se deja atrás: logros que ya no alimentan." },
+      { title: "La luna", description: "La intuición que guía cuando la razón no tiene mapa." },
+      { title: "Las montañas", description: "El camino exigente hacia algo que todavía no tiene nombre." },
+    ],
+    love: "Alejamiento necesario o la sensación de que la relación ya no llena. La honestidad evita heridas mayores.",
+    work: "Renuncia, cambio de rumbo o búsqueda de un trabajo con más sentido. Planifica antes de saltar.",
+    health: "El cuerpo pide un cambio de hábitos o de entorno. La excesiva exigencia también se abandona.",
+    personal: "Pregúntate qué estás dejando y por qué. La renuncia consciente no es lo mismo que la fuga.",
+    advice: "Escribe qué buscas y qué estás dispuesto a dejar. Da un paso concreto hacia lo primero.",
+    colorKeys: ["indigo", "silver", "black"],
+  },
+  {
+    n: 44,
+    suit: "copas",
+    rank: 9,
+    scene:
+      "Un hombre sentado con los brazos cruzados sonríe ante una mesa con un mantel. Detrás, nueve copas forman un arco.",
+    essence: "la satisfacción que se permite disfrutar",
+    shadow: "el placer que se vuelve complacencia",
+    general:
+      "El Nueve de Copas es la carta del deseo cumplido y del disfrute. No es la plenitud del Diez, más compartida; es la satisfacción personal de quien se permite gozar de lo conseguido. La carta invita a saborear sin convertir el placer en medida de todo.",
+    message: "Permítete disfrutar lo que has logrado. El placer también es parte de una vida bien vivida.",
+    keywords: ["Satisfacción", "Deseo", "Disfrute", "Bienestar", "Logro"],
+    symbols: [
+      { title: "El arco de copas", description: "La abundancia que rodea y sostiene el disfrute." },
+      { title: "Los brazos cruzados", description: "La comodidad de quien se siente en su lugar." },
+      { title: "La sonrisa", description: "El gusto de reconocer que algo salió bien." },
+    ],
+    love: "Un deseo amoroso que se cumple o una relación que brinda placer y seguridad. Cuida no volverte exigente.",
+    work: "Reconocimiento, comodidad económica o un logro que se disfruta. No confundas satisfacción con estancamiento.",
+    health: "Buen momento para el disfrute y el autocuidado. Evita los excesos que prometen más de lo que dan.",
+    personal: "Date permiso de gozar sin culpa. La satisfacción sostenible también requiere moderación.",
+    advice: "Haz algo que disfrutes de verdad hoy y hazlo sin distracciones. Agradece lo que ya tienes.",
+    colorKeys: ["gold", "rose", "crimson"],
+  },
+  {
+    n: 45,
+    suit: "copas",
+    rank: 10,
+    scene:
+      "Una pareja se abraza bajo un arcoíris con diez copas. Dos niños bailan a su lado y al fondo se ve una casa junto a un río.",
+    essence: "la plenitud que se comparte en casa",
+    shadow: "el ideal familiar que oculta tensiones",
+    general:
+      "El Diez de Copas es la imagen del bienestar emocional compartido: familia, hogar, pertenencia. La carta no promete una vida sin conflictos, pero sí la experiencia de tener un lugar donde volver. Su enseñanza está en cuidar ese lugar sin idealizarlo.",
+    message: "El hogar no es un lugar perfecto: es donde puedes llegar con lo que eres. Cuídalo.",
+    keywords: ["Hogar", "Familia", "Plenitud", "Pertenencia", "Armonía"],
+    symbols: [
+      { title: "El arcoíris", description: "La promesa de armonía después de la tormenta." },
+      { title: "Las diez copas", description: "El bienestar emocional que se comparte y se multiplica." },
+      { title: "La casa", description: "El refugio construido con tiempo, cuidado y presencia." },
+    ],
+    love: "Una relación madura con proyecto de hogar o una familia que sostiene. La armonía se cultiva a diario.",
+    work: "Un equipo que se siente como familia o un proyecto que brinda estabilidad. Cuida los límites.",
+    health: "El bienestar emocional favorece la salud. La convivencia armónica también es un hábito.",
+    personal: "Reconoce dónde perteneces y qué haces para cuidarlo. La plenitud no es perfección.",
+    advice: "Dedica tiempo de calidad a las personas con las que compartes tu vida. Sin pantallas de por medio.",
+    colorKeys: ["sky", "gold", "rose"],
+  },
+  {
+    n: 46,
+    suit: "copas",
+    rank: 11,
+    scene:
+      "Un joven de pie junto al mar sostiene una copa de la que asoma un pez. Mira la copa con sorpresa, como si acabara de descubrir algo.",
+    essence: "la sensibilidad que se abre al asombro",
+    shadow: "la ensoñación que evita el mundo",
+    general:
+      "La Sota de Copas trae un mensaje del corazón: intuición, creatividad y asombro. Es una sensibilidad joven que todavía no sabe cómo protegerse, pero que percibe cosas que la razón no alcanza. La carta favorece la expresión artística y los gestos sinceros.",
+    message: "Hay una intuición que pide ser escuchada. No la descartes por no poder explicarla.",
+    keywords: ["Asombro", "Intuición", "Creatividad", "Mensaje", "Sensibilidad"],
+    symbols: [
+      { title: "El pez", description: "La intuición que emerge de lo profundo y sorprende." },
+      { title: "La copa", description: "El recipiente de una emoción que todavía está naciendo." },
+      { title: "El mar", description: "El mundo interior que se abre sin pedir permiso." },
+    ],
+    love: "Un mensaje afectivo, un flechazo o la ternura de un vínculo que empieza. Escucha lo que sientes.",
+    work: "Una idea creativa, un proyecto artístico o una propuesta que llega por intuición. Anótala antes de olvidarla.",
+    health: "La sensibilidad pide cuidado. El descanso y el arte también son formas de sanar.",
+    personal: "Recupera el asombro. La mirada nueva encuentra posibilidades donde la costumbre ve rutina.",
+    advice: "Escribe o dibuja lo que sientes sin juzgarlo. Deja que la intuición hable primero.",
+    colorKeys: ["sky", "silver", "rose"],
+  },
+  {
+    n: 47,
+    suit: "copas",
+    rank: 12,
+    scene:
+      "Un caballero avanza despacio sobre un caballo blanco y ofrece una copa. Cruza un paisaje con un río, símbolo de un camino emocional.",
+    essence: "el corazón que avanza con ternura",
+    shadow: "la promesa que no se sostiene en hechos",
+    general:
+      "El Caballero de Copas es el romántico: trae gestos, palabras y una sensibilidad que conmueve. Su fuerza está en la capacidad de ofrecer afecto; su riesgo, en quedarse en la intención sin concretar. La carta invita a que el sentimiento se vuelva presencia.",
+    message: "Una intención hermosa necesita hechos que la sostengan. No prometas más de lo que puedes cuidar.",
+    keywords: ["Romance", "Gestos", "Sensibilidad", "Mensaje", "Promesa"],
+    symbols: [
+      { title: "La copa ofrecida", description: "El afecto que se extiende y espera ser recibido." },
+      { title: "El caballo lento", description: "La delicadeza de un avance que no necesita prisa." },
+      { title: "El río", description: "El cauce emocional que da dirección al sentimiento." },
+    ],
+    love: "Cortejo, declaración o gesto romántico. Disfruta la ternura y observa si los actos acompañan las palabras.",
+    work: "Una propuesta que llega con buenas intenciones o un proyecto creativo. Revisa plazos y compromisos.",
+    health: "La calma emocional favorece el cuerpo. Muévete con suavidad y evita el exceso de estímulos.",
+    personal: "Aprende a sostener el afecto en lo cotidiano. El amor también se demuestra en la constancia.",
+    advice: "Convierte una intención afectiva en un gesto concreto. Una llamada, una visita, una ayuda real.",
+    colorKeys: ["rose", "sky", "ivory"],
+  },
+  {
+    n: 48,
+    suit: "copas",
+    rank: 13,
+    scene:
+      "Una reina sentada en un trono junto al mar sostiene una copa cerrada y ornamentada. Los ángeles tallados en el trono y el agua a sus pies rodean la escena.",
+    essence: "la empatía que sostiene sin ahogarse",
+    shadow: "la absorción emocional que borra límites",
+    general:
+      "La Reina de Copas es la sensibilidad madura: escucha, contiene y comprende sin perderse en la emoción ajena. Su copa está cerrada porque sabe que no todo lo que siente debe salir al mismo tiempo. La carta habla de cuidar desde un centro propio.",
+    message: "Puedes sostener a otros sin cargar con todo. Tu empatía también necesita un borde.",
+    keywords: ["Empatía", "Intuición", "Cuidado", "Contención", "Madurez"],
+    symbols: [
+      { title: "La copa cerrada", description: "La emoción profunda que se guarda con cuidado, no con frialdad." },
+      { title: "El agua", description: "La intuición que fluye y encuentra su cauce." },
+      { title: "Los ángeles del trono", description: "La compasión que ve lo humano sin juzgarlo." },
+    ],
+    love: "Un vínculo profundo y comprensivo. La carta favorece la escucha, la ternura y los límites claros.",
+    work: "Un rol de cuidado, mediación o acompañamiento. Tu intuición es una herramienta valiosa.",
+    health: "El cuerpo y las emociones están conectados. Escucha las señales antes de que se vuelvan síntoma.",
+    personal: "Aprende a distinguir entre comprender y cargar. La compasión no exige desaparecer.",
+    advice: "Pregunta a alguien cómo está y escucha sin intentar arreglarlo. Después, cuida tu propio estado.",
+    colorKeys: ["sky", "rose", "silver"],
+  },
+  {
+    n: 49,
+    suit: "copas",
+    rank: 14,
+    scene:
+      "Un rey sentado en un trono flotante en el mar sostiene una copa y un cetro. A un lado, un pez salta; el cielo está sereno.",
+    essence: "la madurez emocional que calma",
+    shadow: "el control que reprime la emoción",
+    general:
+      "El Rey de Copas es el dominio sereno de la emoción: no la niega, la comprende y la orienta. Su trono está en el agua porque sabe gobernar sin endurecerse. La carta habla de una autoridad que escucha, contiene y decide con equilibrio.",
+    message: "La calma no es ausencia de emoción: es emoción bien sostenida. Gobierna tu mundo interno.",
+    keywords: ["Calma", "Madurez", "Contención", "Diplomacia", "Autoridad"],
+    symbols: [
+      { title: "El trono en el mar", description: "La capacidad de permanecer estable en medio del movimiento emocional." },
+      { title: "El pez", description: "La intuición que emerge y puede ser leída con serenidad." },
+      { title: "El cetro y la copa", description: "La unión de la voluntad y el sentimiento en una misma dirección." },
+    ],
+    love: "Una relación estable y emocionalmente madura. La carta favorece la calma, la escucha y la generosidad.",
+    work: "Liderazgo sereno, mediación o gestión de equipos con sensibilidad. Decide sin perder la empatía.",
+    health: "El equilibrio emocional sostiene la salud. Cuida el exceso de contención que se vuelve tensión.",
+    personal: "Tu serenidad puede calmar a otros. No confundas calma con represión.",
+    advice: "Antes de responder a una situación tensa, respira y nombra lo que sientes. Después decide.",
+    colorKeys: ["sky", "indigo", "gold"],
+  },
+
+  // ESPADAS (Aire) · 50-63
+  {
+    n: 50,
+    suit: "espadas",
+    rank: 1,
+    scene:
+      "Una mano sale de una nube y sostiene una espada recta. La corona, la rama de olivo y la palma acompañan la hoja, bajo un cielo con nubes.",
+    essence: "la claridad que corta la confusión",
+    shadow: "la verdad que se usa como arma",
+    general:
+      "El As de Espadas es el momento en que la mente se aclara: una idea, una verdad o una decisión que ordena el caos. La espada es afilada por los dos lados; puede liberar o herir. La carta pide usar la claridad con responsabilidad.",
+    message: "Ya ves lo que antes no veías. Nombra la verdad y elige qué hacer con ella.",
+    keywords: ["Claridad", "Verdad", "Decisión", "Ruptura", "Comprensión"],
+    symbols: [
+      { title: "La espada erguida", description: "La mente que distingue y se atreve a cortar lo que confunde." },
+      { title: "La corona", description: "El pensamiento que aspira a gobernar sin perder la humildad." },
+      { title: "La rama de olivo", description: "La posibilidad de que la verdad también construya paz." },
+    ],
+    love: "Una conversación decisiva o una verdad que cambia el vínculo. Habla claro, pero cuida el filo.",
+    work: "Una idea brillante, un análisis certero o una decisión que ordena el proyecto. Documenta lo que piensas.",
+    health: "La claridad mental ayuda a detectar qué te hace daño. Cuida el insomnio y la sobreestimulación.",
+    personal: "La lucidez es una herramienta, no una identidad. Úsala para comprender, no para ganar.",
+    advice: "Escribe la verdad que has estado evitando y decide un paso para actuar en coherencia.",
+    colorKeys: ["sky", "silver", "ivory"],
+  },
+  {
+    n: 51,
+    suit: "espadas",
+    rank: 2,
+    scene:
+      "Una mujer con los ojos vendados sostiene dos espadas cruzadas sobre el pecho. Detrás, el mar y unas rocas; arriba, una luna creciente.",
+    essence: "la tregua que pide una decisión",
+    shadow: "la indecisión que se disfraza de neutralidad",
+    general:
+      "El Dos de Espadas es el equilibrio incómodo de quien evita elegir. La venda no es ignorancia: es una protección. La carta muestra que la calma aparente puede ser una forma de no mirar. En algún momento, la balanza necesita moverse.",
+    message: "No decidir también es una decisión. Quítate la venda y mira lo que hay detrás.",
+    keywords: ["Indecisión", "Tregua", "Equilibrio", "Evitación", "Elección"],
+    symbols: [
+      { title: "La venda", description: "La defensa que impide ver lo que incomoda." },
+      { title: "Las espadas cruzadas", description: "Dos fuerzas que se neutralizan y piden una salida." },
+      { title: "La luna", description: "La intuición que espera ser escuchada bajo la superficie." },
+    ],
+    love: "Una relación en pausa o una decisión afectiva postergada. Hablar puede romper el bloqueo.",
+    work: "Dos opciones que parecen equivalentes. Define criterios y elige antes de que la parálisis decida por ti.",
+    health: "La tensión mental se acumula. El descanso y una conversación honesta ayudan a soltar.",
+    personal: "La neutralidad prolongada desgasta. Acepta que toda elección tiene un costo.",
+    advice: "Haz una lista de pros y contras y ponle fecha a la decisión. No la dejes indefinidamente.",
+    colorKeys: ["silver", "indigo", "black"],
+  },
+  {
+    n: 52,
+    suit: "espadas",
+    rank: 3,
+    scene:
+      "Un corazón rojo es atravesado por tres espadas bajo un cielo de nubes y lluvia. No hay figuras: solo el dolor y el clima que lo acompaña.",
+    essence: "el dolor que nombra la verdad",
+    shadow: "la herida que se convierte en identidad",
+    general:
+      "El Tres de Espadas es la carta del dolor claro: una verdad que hiere, una pérdida o una palabra que no se puede olvidar. La lluvia indica que el sentimiento tiene su tiempo. La carta no promete que no duela; promete que nombrarlo es el inicio de la cura.",
+    message: "El dolor que se nombra puede empezar a sanar. No lo conviertas en tu única historia.",
+    keywords: ["Dolor", "Verdad", "Ruptura", "Traición", "Sanación"],
+    symbols: [
+      { title: "El corazón", description: "El centro afectivo que recibe el impacto de la verdad." },
+      { title: "Las tres espadas", description: "Las palabras o hechos que atraviesan y dejan marca." },
+      { title: "La lluvia", description: "El duelo que necesita su tiempo para limpiar." },
+    ],
+    love: "Una ruptura, una traición o una verdad incómoda. El dolor es real; la sanación también es posible.",
+    work: "Críticas duras, un conflicto o una decepción profesional. Separa el hecho del juicio sobre ti.",
+    health: "El dolor emocional afecta al cuerpo. Busca apoyo y evita decisiones importantes en pleno duelo.",
+    personal: "Permítete sentir sin convertir la herida en identidad. El dolor es una experiencia, no un destino.",
+    advice: "Nombra lo que te dolió sin minimizarlo. Después, elige un gesto de cuidado hacia ti.",
+    colorKeys: ["crimson", "silver", "indigo"],
+  },
+  {
+    n: 53,
+    suit: "espadas",
+    rank: 4,
+    scene:
+      "La figura yacente de un caballero descansa sobre un sepulcro. Tres espadas cuelgan de la pared y una cuarta está bajo la tumba; una vidriera deja pasar la luz.",
+    essence: "el descanso que repara la mente",
+    shadow: "el aislamiento que evita el retorno",
+    general:
+      "El Cuatro de Espadas es la pausa necesaria después del conflicto. No es rendición: es recuperación. El silencio de la imagen permite que la mente se ordene. La carta recuerda que el descanso también es una forma de preparación.",
+    message: "Detente antes de que el agotamiento decida por ti. El silencio también trabaja.",
+    keywords: ["Descanso", "Recuperación", "Silencio", "Pausa", "Retiro"],
+    symbols: [
+      { title: "El sepulcro", description: "El reposo que parece final, pero prepara un regreso." },
+      { title: "Las espadas guardadas", description: "Los conflictos que se dejan en suspenso para poder descansar." },
+      { title: "La vidriera", description: "La luz que entra cuando se hace silencio." },
+    ],
+    love: "Un tiempo de pausa o espacio personal necesario. No confundas descanso con abandono.",
+    work: "Vacaciones, retiro o una pausa estratégica. Vuelve con la mente clara, no con más prisa.",
+    health: "El cuerpo pide descanso real. Dormir, respirar y bajar el ritmo son prioridades.",
+    personal: "Date permiso de parar sin justificarte. La productividad también depende del descanso.",
+    advice: "Bloquea un rato sin pantallas y sin tareas. Descansa de verdad, aunque sea veinte minutos.",
+    colorKeys: ["silver", "indigo", "ivory"],
+  },
+  {
+    n: 54,
+    suit: "espadas",
+    rank: 5,
+    scene:
+      "Un hombre recoge espadas del suelo mientras otras figuras se alejan cabizbajas. El cielo está revuelto y el gesto del vencedor no parece triunfal.",
+    essence: "la victoria que cuesta el vínculo",
+    shadow: "la necesidad de tener razón a cualquier precio",
+    general:
+      "El Cinco de Espadas es la carta del conflicto ganado a un costo alto. Se puede tener razón y quedarse solo. La carta invita a preguntarse qué se gana y qué se pierde en cada batalla, y si vale la pena seguir luchando.",
+    message: "Ganar no siempre es avanzar. A veces la mejor victoria es no entrar en la pelea.",
+    keywords: ["Conflicto", "Orgullo", "Derrota", "Estrategia", "Costo"],
+    symbols: [
+      { title: "Las espadas recogidas", description: "El botín de una victoria que no devuelve la paz." },
+      { title: "Las figuras que se alejan", description: "Los vínculos que se pierden cuando el conflicto lo consume todo." },
+      { title: "El cielo revuelto", description: "La tensión que permanece incluso después de ganar." },
+    ],
+    love: "Discusiones por tener razón o una lucha de poder. Pregúntate si quieres ganar o mantener el vínculo.",
+    work: "Competencia agresiva o un conflicto que desgasta al equipo. Evalúa el costo real de la disputa.",
+    health: "El estrés del conflicto afecta al cuerpo. Aléjate de las peleas que no te corresponden.",
+    personal: "Tu necesidad de tener razón puede aislarte. La humildad también es una forma de fuerza.",
+    advice: "Antes de responder a una provocación, pregúntate qué ganas y qué pierdes. Elige conscientemente.",
+    colorKeys: ["silver", "black", "indigo"],
+  },
+  {
+    n: 55,
+    suit: "espadas",
+    rank: 6,
+    scene:
+      "Un barquero cruza un río con dos figuras sentadas. Seis espadas se alzan en la barca; a lo lejos, la otra orilla parece más tranquila.",
+    essence: "el tránsito hacia aguas más calmas",
+    shadow: "la huida que no resuelve lo que lleva dentro",
+    general:
+      "El Seis de Espadas es la transición: dejar atrás un lugar mental o emocional difícil y avanzar hacia algo más sereno. Las espadas siguen en la barca porque el pasado no desaparece; se lleva, pero ya no domina el paisaje. La carta acompaña los cambios necesarios.",
+    message: "El movimiento cura lo que la quietud no puede. Avanza hacia lo que te hace bien.",
+    keywords: ["Transición", "Viaje", "Alivio", "Cambio", "Superación"],
+    symbols: [
+      { title: "La barca", description: "El vehículo que permite cruzar sin cargar todo el peso." },
+      { title: "Las espadas", description: "El pasado que se lleva con uno, pero ya no ocupa todo el espacio." },
+      { title: "La otra orilla", description: "La posibilidad de un estado mental más tranquilo." },
+    ],
+    love: "Un cambio de etapa, una distancia que alivia o una relación que deja atrás el conflicto. Habla de lo que llevas.",
+    work: "Cambio de puesto, mudanza o transición profesional. El alivio llega cuando aceptas el proceso.",
+    health: "Una mejoría gradual. El descanso, el movimiento y el cambio de entorno favorecen.",
+    personal: "No tienes que resolver todo antes de moverte. A veces el cambio de lugar ordena la mente.",
+    advice: "Identifica qué situación te pesa y da un paso para cambiar de escenario. Aunque sea pequeño.",
+    colorKeys: ["sky", "silver", "indigo"],
+  },
+  {
+    n: 56,
+    suit: "espadas",
+    rank: 7,
+    scene:
+      "Una figura se aleja de un campamento con cinco espadas en los brazos. Otras dos quedan clavadas en el suelo, y las tiendas se ven al fondo.",
+    essence: "la estrategia que pide conciencia",
+    shadow: "el engaño que empieza por uno mismo",
+    general:
+      "El Siete de Espadas habla de estrategia, secreto y astucia. A veces es necesario actuar con discreción; otras, la carta señala una evasión. La clave está en la intención: ¿proteges algo valioso o huyes de una conversación pendiente?",
+    message: "La astucia sin honestidad termina pesando. Revisa qué estás evitando y por qué.",
+    keywords: ["Estrategia", "Secreto", "Astucia", "Evasión", "Autonomía"],
+    symbols: [
+      { title: "Las espadas robadas", description: "Los recursos que se toman sin dar cuenta." },
+      { title: "El campamento", description: "El contexto que se deja atrás y que aún puede reclamar lo suyo." },
+      { title: "La mirada hacia atrás", description: "La conciencia que sabe que algo no está del todo bien." },
+    ],
+    love: "Secretos, evasión o una conversación que se evita. La transparencia fortalece; el silencio desgasta.",
+    work: "Estrategia, negociación o un movimiento que requiere discreción. Cuida los límites éticos.",
+    health: "La tensión de sostener una máscara agota. Date un espacio donde no tengas que aparentar.",
+    personal: "Pregúntate si tu estrategia protege o solo evita. La claridad también puede ser discreta.",
+    advice: "Elige una conversación que estés evitando y prepárala. Di la verdad sin necesidad de herir.",
+    colorKeys: ["indigo", "silver", "black"],
+  },
+  {
+    n: 57,
+    suit: "espadas",
+    rank: 8,
+    scene:
+      "Una figura vendada y atada está rodeada por ocho espadas clavadas en el suelo. Al fondo, un castillo sobre una colina.",
+    essence: "la prisión que se descubre mental",
+    shadow: "la parálisis que no se atreve a probar",
+    general:
+      "El Ocho de Espadas es la sensación de no tener salida. Las espadas no forman una jaula completa: hay un espacio abierto. La carta habla de límites que existen en la mente antes que en el mundo. La libertad empieza por cuestionar la venda.",
+    message: "La jaula parece cerrada, pero no lo está del todo. Comprueba qué límites son reales.",
+    keywords: ["Bloqueo", "Parálisis", "Miedo", "Limitación", "Conciencia"],
+    symbols: [
+      { title: "La venda", description: "La creencia de que no hay alternativas." },
+      { title: "Las ocho espadas", description: "Los pensamientos que rodean y parecen cercar." },
+      { title: "El espacio abierto", description: "La salida que existe y que aún no se ha probado." },
+    ],
+    love: "Sensación de estar atrapado en un vínculo o en un patrón. Revisa qué parte de la situación depende de ti.",
+    work: "Un entorno que limita o una creencia sobre lo que puedes hacer. Pide perspectiva antes de rendirte.",
+    health: "La ansiedad estrecha la mirada. Respira, muévete y recupera sensación de agencia.",
+    personal: "No estás tan atrapado como crees. Haz una pequeña prueba de libertad hoy.",
+    advice: "Escribe la frase “no puedo” que más repites y busca una excepción real. Actúa sobre ella.",
+    colorKeys: ["indigo", "black", "silver"],
+  },
+  {
+    n: 58,
+    suit: "espadas",
+    rank: 9,
+    scene:
+      "Una figura se incorpora en la cama con las manos en el rostro. Nueve espadas cuelgan de la pared oscura; la colcha tiene rosas y signos del zodíaco.",
+    essence: "la angustia que pide ser escuchada",
+    shadow: "la mente que repite el peor escenario",
+    general:
+      "El Nueve de Espadas es la carta de la ansiedad y el insomnio. El sufrimiento es real, pero buena parte ocurre en la mente, anticipando lo que aún no ha pasado. La carta pide sacar el miedo del silencio y mirarlo con ayuda.",
+    message: "Lo que te desvela necesita ser dicho, no repetido. Compártelo y pierde un poco de poder.",
+    keywords: ["Angustia", "Insomnio", "Miedo", "Preocupación", "Sombra"],
+    symbols: [
+      { title: "Las nueve espadas", description: "Los pensamientos que se acumulan en la oscuridad." },
+      { title: "La cama", description: "El lugar del descanso que se convierte en campo de batalla mental." },
+      { title: "Las rosas de la colcha", description: "La belleza y el orden que todavía sostienen la vida cotidiana." },
+    ],
+    love: "Miedos, celos o inseguridades que crecen de noche. Habla de lo que imaginas antes de que se vuelva certeza.",
+    work: "Preocupación por el rendimiento o por un escenario que aún no ocurrió. Escribe los hechos y sepáralos de la hipótesis.",
+    health: "El sueño y la calma mental son prioridad. Busca apoyo profesional si la angustia persiste.",
+    personal: "Tu mente puede ser una aliada o una jueza. Aprende a distinguir entre alerta y catástrofe.",
+    advice: "Escribe el peor escenario y luego escribe qué harías si ocurriera. El miedo pierde tamaño.",
+    colorKeys: ["black", "indigo", "crimson"],
+  },
+  {
+    n: 59,
+    suit: "espadas",
+    rank: 10,
+    scene:
+      "Una figura yace boca abajo con diez espadas clavadas en la espalda. Al fondo, el amanecer rompe sobre el horizonte.",
+    essence: "el final que libera del peso",
+    shadow: "la catástrofe que se anticipa sin remedio",
+    general:
+      "El Diez de Espadas es el final de un ciclo de conflicto. La imagen es dura, pero el cielo empieza a aclarar: no queda nada más que quitar. La carta habla de tocar fondo y de la posibilidad de levantarse sin las viejas armas.",
+    message: "Esto ha terminado. No es el fin de todo: es el fin de una forma de luchar.",
+    keywords: ["Final", "Agotamiento", "Liberación", "Límite", "Amanecer"],
+    symbols: [
+      { title: "Las diez espadas", description: "El conflicto llevado hasta su límite máximo." },
+      { title: "El cuerpo en el suelo", description: "La rendición que también es un punto de partida." },
+      { title: "El amanecer", description: "La luz que aparece cuando ya no hay nada que sostener." },
+    ],
+    love: "Un cierre definitivo o una relación que llegó a su límite. Aceptar el final abre espacio para otra cosa.",
+    work: "Un proyecto que termina o una etapa que se agota. Cierra con dignidad y aprende del recorrido.",
+    health: "El agotamiento pide parar de verdad. La recuperación empieza cuando dejas de forzar.",
+    personal: "Tocar fondo también es una forma de tocar tierra. Desde ahí se puede construir distinto.",
+    advice: "Cierra formalmente algo que ya terminó: una conversación, una tarea, una etapa. Hazlo y descansa.",
+    colorKeys: ["black", "silver", "gold"],
+  },
+  {
+    n: 60,
+    suit: "espadas",
+    rank: 11,
+    scene:
+      "Un joven en terreno elevado sostiene una espada con ambas manos y mira hacia un lado. El viento mueve las nubes y su cabello.",
+    essence: "la curiosidad que observa y pregunta",
+    shadow: "la vigilancia que se vuelve desconfianza",
+    general:
+      "La Sota de Espadas es la mente curiosa y alerta: pregunta, investiga, detecta lo que no encaja. Su energía es valiosa para aprender, pero puede volverse suspicacia si no encuentra un cauce. La carta favorece el estudio y la comunicación clara.",
+    message: "Pregunta antes de concluir. La curiosidad bien dirigida es una forma de inteligencia.",
+    keywords: ["Curiosidad", "Observación", "Aprendizaje", "Alerta", "Comunicación"],
+    symbols: [
+      { title: "La espada en alto", description: "La mente dispuesta a cortar la ignorancia." },
+      { title: "El viento", description: "Las ideas que se mueven y cambian de forma." },
+      { title: "La mirada lateral", description: "La atención que detecta lo que otros pasan por alto." },
+    ],
+    love: "Conversaciones que aclaran o una curiosidad que necesita respuestas. Pregunta sin interrogar.",
+    work: "Aprendizaje, investigación o una comunicación que abre puertas. Verifica antes de afirmar.",
+    health: "La mente inquieta necesita descanso. Alterna estudio con movimiento y silencio.",
+    personal: "Observa sin juzgar de antemano. La desconfianza también puede cerrar buenas puertas.",
+    advice: "Haz una pregunta que llevas tiempo queriendo hacer. Escucha la respuesta completa.",
+    colorKeys: ["sky", "silver", "ivory"],
+  },
+  {
+    n: 61,
+    suit: "espadas",
+    rank: 12,
+    scene:
+      "Un caballero avanza a galope con la espada en alto. El viento agita su capa y las nubes; el paisaje pasa rápido.",
+    essence: "la verdad que se defiende con decisión",
+    shadow: "la prisa que atropella sin escuchar",
+    general:
+      "El Caballero de Espadas es la acción mental rápida: defender una idea, decir lo que se piensa, actuar con determinación. Su velocidad abre caminos, pero puede dejar atrás matices importantes. La carta invita a avanzar con coraje y con puntería.",
+    message: "Defiende lo que crees, pero apunta bien. La velocidad sin dirección dispersa la fuerza.",
+    keywords: ["Decisión", "Coraje", "Comunicación", "Impulso", "Defensa"],
+    symbols: [
+      { title: "La espada en alto", description: "La convicción que se sostiene con claridad." },
+      { title: "El galope", description: "La velocidad de una mente que ya decidió." },
+      { title: "El viento", description: "La fuerza que empuja y también desordena." },
+    ],
+    love: "Una conversación directa o una defensa apasionada. La franqueza ayuda si no se vuelve arma.",
+    work: "Iniciativa, negociación o defensa de una propuesta. Actúa rápido, pero revisa los detalles.",
+    health: "La prisa agota. Alterna acción intensa con pausas reales.",
+    personal: "Tu claridad puede inspirar o intimidar. Aprende a modular el filo.",
+    advice: "Antes de enviar ese mensaje o tomar esa decisión, relee y pregúntate si estás escuchando.",
+    colorKeys: ["sky", "indigo", "silver"],
+  },
+  {
+    n: 62,
+    suit: "espadas",
+    rank: 13,
+    scene:
+      "Una reina sentada en un trono sostiene una espada recta. Mariposas decoran su corona y su trono; las nubes se abren detrás.",
+    essence: "la lucidez que dice lo que ve",
+    shadow: "la frialdad que se protege del dolor",
+    general:
+      "La Reina de Espadas es la inteligencia madura: observa, distingue y habla con precisión. Su espada no es cruel, es honesta. La carta habla de una mente que ha atravesado el dolor y aprendió a nombrarlo sin dramatismo.",
+    message: "La verdad dicha con cuidado libera. No confundas honestidad con dureza.",
+    keywords: ["Lucidez", "Honestidad", "Independencia", "Discernimiento", "Límites"],
+    symbols: [
+      { title: "La espada", description: "La palabra precisa que corta la confusión." },
+      { title: "Las mariposas", description: "La transformación que nace de mirar la verdad." },
+      { title: "El trono elevado", description: "La perspectiva que se gana con experiencia." },
+    ],
+    love: "Necesidad de claridad y límites. La franqueza fortalece si se acompaña de ternura.",
+    work: "Análisis, comunicación o liderazgo con criterio. Tu palabra tiene peso: úsala con justicia.",
+    health: "La claridad mental ayuda, pero el exceso de control tensa. Permite el descanso y la vulnerabilidad.",
+    personal: "Has aprendido a protegerte. Revisa si esa armadura todavía te sirve.",
+    advice: "Di una verdad que has callado, con respeto y sin rodeos. Después, escucha.",
+    colorKeys: ["silver", "sky", "indigo"],
+  },
+  {
+    n: 63,
+    suit: "espadas",
+    rank: 14,
+    scene:
+      "Un rey sentado en un trono sostiene una espada vertical. Mariposas adornan su trono y el cielo se abre detrás de él.",
+    essence: "la autoridad de la razón madura",
+    shadow: "el juicio que se vuelve inflexible",
+    general:
+      "El Rey de Espadas es el pensamiento que gobierna con justicia: analiza, decide y sostiene la ley. Su autoridad no viene de la fuerza, sino de la coherencia. La carta habla de asumir el mando de la propia mente y de responder por las decisiones.",
+    message: "Piensa con claridad y actúa con justicia. La autoridad verdadera no necesita imponerse.",
+    keywords: ["Autoridad", "Justicia", "Razón", "Estrategia", "Responsabilidad"],
+    symbols: [
+      { title: "La espada vertical", description: "La razón que se mantiene firme sin inclinarse." },
+      { title: "Las mariposas", description: "La evolución del pensamiento que no se queda en lo antiguo." },
+      { title: "El trono", description: "La responsabilidad de decidir por el bien común." },
+    ],
+    love: "Una relación que necesita acuerdos claros y justos. La razón ayuda si no apaga el afecto.",
+    work: "Liderazgo estratégico, arbitraje o decisiones de peso. Asume la responsabilidad de lo que decidas.",
+    health: "La mente ordenada sostiene el cuerpo, pero el exceso de control desgasta. Suelta lo que no depende de ti.",
+    personal: "Tu criterio es valioso. Recuerda que la justicia también incluye compasión.",
+    advice: "Toma una decisión pendiente con criterios claros y asume sus consecuencias. Sin excusas.",
+    colorKeys: ["silver", "indigo", "sky"],
+  },
+
+  // OROS (Tierra) · 64-77
+  {
+    n: 64,
+    suit: "oros",
+    rank: 1,
+    scene:
+      "Una mano sale de una nube y sostiene una moneda de oro con una estrella grabada. Abajo, un jardín con un arco y montañas al fondo.",
+    essence: "la semilla material que pide cuidado",
+    shadow: "la oportunidad que se posterga por miedo",
+    general:
+      "El As de Oros es el inicio de algo concreto: un recurso, un trabajo, una oportunidad que puede crecer. La moneda no es un premio: es una semilla. La carta invita a recibir lo que llega y a ponerlo en circulación con paciencia.",
+    message: "Tienes en las manos algo que puede crecer. Plantéalo y cuídalo con constancia.",
+    keywords: ["Oportunidad", "Recurso", "Semilla", "Trabajo", "Prosperidad"],
+    symbols: [
+      { title: "La moneda", description: "El valor concreto que se recibe y se puede cultivar." },
+      { title: "El jardín", description: "El espacio fértil donde la semilla puede echar raíces." },
+      { title: "El arco", description: "El umbral entre la oportunidad y su realización." },
+    ],
+    love: "Una relación que empieza con bases concretas o un proyecto de vida compartido. Cuida lo cotidiano.",
+    work: "Nueva oferta, cliente o fuente de ingresos. Es momento de sembrar con método, no de cosechar.",
+    health: "El cuerpo agradece rutinas estables. Comienza un hábito sencillo y sostenlo.",
+    personal: "Reconoce los recursos que ya tienes: tiempo, energía, habilidades. Úsalos con intención.",
+    advice: "Elige una oportunidad concreta y dale un primer paso medible esta semana.",
+    colorKeys: ["earth", "emerald", "gold"],
+  },
+  {
+    n: 65,
+    suit: "oros",
+    rank: 2,
+    scene:
+      "Una figura hace malabares con dos monedas unidas por una cinta en forma de infinito. Detrás, dos barcos navegan sobre olas altas.",
+    essence: "el equilibrio que se sostiene en movimiento",
+    shadow: "la dispersión que confunde flexibilidad con caos",
+    general:
+      "El Dos de Oros habla de gestionar varias cosas a la vez sin perder el centro. El infinito indica que el equilibrio no es estático: se reajusta. La carta pide flexibilidad, pero también prioridades claras para que el movimiento no se vuelva caos.",
+    message: "Puedes sostener varias cosas si sabes cuáles no puedes soltar. Ajusta el ritmo.",
+    keywords: ["Equilibrio", "Adaptación", "Prioridades", "Ritmo", "Flexibilidad"],
+    symbols: [
+      { title: "Las dos monedas", description: "Los recursos que se alternan y piden atención." },
+      { title: "El infinito", description: "El movimiento continuo del equilibrio cotidiano." },
+      { title: "Las olas", description: "El entorno cambiante que exige adaptación." },
+    ],
+    love: "Malabares entre la relación y otras responsabilidades. El tiempo de calidad vale más que la cantidad.",
+    work: "Varias tareas o clientes a la vez. Prioriza y delega lo que no requiere tu mano.",
+    health: "El ritmo acelerado pasa factura. Alterna esfuerzo y recuperación de forma consciente.",
+    personal: "Flexibilidad no es hacerlo todo. Elige qué sostienes y qué sueltas.",
+    advice: "Haz una lista de tus cargas actuales y marca las tres que de verdad importan esta semana.",
+    colorKeys: ["earth", "sky", "gold"],
+  },
+  {
+    n: 66,
+    suit: "oros",
+    rank: 3,
+    scene:
+      "Un escultor trabaja en el interior de una iglesia. Un monje y una figura noble consultan los planos; tres monedas decoran el arco.",
+    essence: "el oficio que se reconoce en equipo",
+    shadow: "la necesidad de aprobación que frena la obra",
+    general:
+      "El Tres de Oros es la colaboración que construye algo duradero. Cada persona aporta una habilidad distinta y el resultado es mayor que la suma. La carta habla de reconocimiento profesional, aprendizaje compartido y trabajo bien hecho.",
+    message: "Tu oficio importa y se potencia en equipo. Comparte lo que sabes y escucha lo que otros ven.",
+    keywords: ["Colaboración", "Oficio", "Reconocimiento", "Aprendizaje", "Calidad"],
+    symbols: [
+      { title: "El escultor", description: "La habilidad que se pone al servicio de una obra." },
+      { title: "Los planos", description: "La visión compartida que ordena el trabajo." },
+      { title: "Las tres monedas", description: "El valor que se reparte entre quienes construyen." },
+    ],
+    love: "Una relación que se construye con esfuerzo y acuerdos. El respeto por el oficio del otro fortalece.",
+    work: "Trabajo en equipo, mentoría o reconocimiento de una habilidad. Cuida la comunicación con quien dirige.",
+    health: "El cuerpo agradece el movimiento consciente y el descanso. La constancia supera la intensidad.",
+    personal: "Reconoce lo que sabes hacer y compártelo. La maestría también se construye enseñando.",
+    advice: "Pide opinión a alguien cuyo criterio respetes y agradece su aporte. Colabora en algo concreto.",
+    colorKeys: ["earth", "gold", "ivory"],
+  },
+  {
+    n: 67,
+    suit: "oros",
+    rank: 4,
+    scene:
+      "Una figura sentada abraza una moneda contra el pecho, con una corona en la cabeza. Dos monedas están bajo sus pies y otra sobre la corona; al fondo, una ciudad.",
+    essence: "la seguridad que se construye con límites",
+    shadow: "la avaricia que confunde tener con ser",
+    general:
+      "El Cuatro de Oros es la carta del control material: ahorrar, proteger, asegurar. La postura es defensiva; la riqueza se sostiene, pero también se cierra. La carta invita a revisar si lo que proteges te protege a ti o te encierra.",
+    message: "Cuidar lo tuyo es sano. Aferrarte a ello con miedo ya no lo es.",
+    keywords: ["Seguridad", "Control", "Ahorro", "Posesión", "Límites"],
+    symbols: [
+      { title: "La moneda abrazada", description: "El recurso que se protege con fuerza." },
+      { title: "La corona", description: "El estatus que se teme perder." },
+      { title: "La ciudad", description: "El mundo que sigue funcionando más allá del control personal." },
+    ],
+    love: "Miedo a perder o necesidad de controlar. La seguridad afectiva también requiere apertura.",
+    work: "Estabilidad económica o resistencia al cambio. Revisa si el exceso de control frena el crecimiento.",
+    health: "La rigidez física y mental se acumula. Estira, respira y permite algo de improvisación.",
+    personal: "Distingue entre cuidar y aferrarte. Lo que no se comparte también se estanca.",
+    advice: "Identifica un recurso que puedas compartir o invertir sin miedo. Hazlo con medida.",
+    colorKeys: ["earth", "gold", "crimson"],
+  },
+  {
+    n: 68,
+    suit: "oros",
+    rank: 5,
+    scene:
+      "Dos figuras caminan descalzas por la nieve, bajo una ventana de iglesia con cinco monedas grabadas. Una de ellas se apoya en una muleta.",
+    essence: "la carencia que pide ayuda",
+    shadow: "la vergüenza que aísla en la necesidad",
+    general:
+      "El Cinco de Oros es la carta de la escasez material o emocional. El frío es real, pero la vidriera iluminada recuerda que hay recursos y comunidad cerca. La carta pide reconocer la necesidad sin confundirla con la falta de valor personal.",
+    message: "Pedir ayuda no te hace menos. La puerta está cerca; quizá solo necesitas levantar la mirada.",
+    keywords: ["Carencia", "Dificultad", "Exclusión", "Ayuda", "Resiliencia"],
+    symbols: [
+      { title: "La nieve", description: "El entorno hostil que agrava la sensación de falta." },
+      { title: "La vidriera", description: "La luz y la comunidad que siguen disponibles." },
+      { title: "Las cinco monedas", description: "Los recursos que existen, aunque no se vean desde la dificultad." },
+    ],
+    love: "Soledad, inseguridad o una relación que atraviesa una crisis material. Hablar de lo que falta alivia.",
+    work: "Desempleo, recorte o sensación de exclusión. Busca apoyo concreto y no te aísles.",
+    health: "La carencia afecta al cuerpo y al ánimo. Prioriza lo básico y pide acompañamiento.",
+    personal: "Tu valor no depende de lo que tienes. La vulnerabilidad compartida también conecta.",
+    advice: "Pide una ayuda concreta a alguien de confianza. No tienes que resolverlo todo solo.",
+    colorKeys: ["earth", "black", "silver"],
+  },
+  {
+    n: 69,
+    suit: "oros",
+    rank: 6,
+    scene:
+      "Un hombre con una balanza en la mano entrega monedas a dos figuras arrodilladas. Su ropa es rica y el gesto parece medido.",
+    essence: "la generosidad que equilibra",
+    shadow: "la caridad que crea dependencia",
+    general:
+      "El Seis de Oros habla de dar y recibir con justicia. La balanza recuerda que la generosidad necesita medida: ni humillación ni dependencia. La carta invita a revisar la relación con el poder que otorga tener recursos.",
+    message: "Dar también es un arte. Hazlo de forma que devuelva dignidad, no deuda.",
+    keywords: ["Generosidad", "Justicia", "Ayuda", "Equilibrio", "Reciprocidad"],
+    symbols: [
+      { title: "La balanza", description: "La medida justa entre dar y recibir." },
+      { title: "Las monedas", description: "El recurso que circula y puede cambiar una situación." },
+      { title: "Las figuras arrodilladas", description: "La vulnerabilidad que pide respeto, no lástima." },
+    ],
+    love: "Un vínculo donde uno da más que el otro. Revisa el equilibrio y habla de lo que necesitas.",
+    work: "Ayuda, mentoría o reparto de recursos. La generosidad bien entendida fortalece al equipo.",
+    health: "El cuidado de otros no puede anular el propio. Reserva energía para ti.",
+    personal: "Revisa si estás dando desde la abundancia o desde la culpa. La generosidad también tiene límites.",
+    advice: "Ayuda a alguien de una forma que respete su autonomía. Pregunta qué necesita antes de suponer.",
+    colorKeys: ["gold", "earth", "rose"],
+  },
+  {
+    n: 70,
+    suit: "oros",
+    rank: 7,
+    scene:
+      "Un agricultor se apoya en su azada y mira una vid con siete monedas. El trabajo está hecho; ahora toca esperar la cosecha.",
+    essence: "la paciencia que confía en la cosecha",
+    shadow: "la espera que no revisa el método",
+    general:
+      "El Siete de Oros es la pausa del cultivador: se ha trabajado y ahora se evalúa. La carta habla de paciencia, pero también de revisar si el esfuerzo va en la dirección correcta. No todo depende del tiempo; también de la calidad de lo sembrado.",
+    message: "Ya has hecho tu parte. Revisa el método, riega lo que importa y deja que el tiempo trabaje.",
+    keywords: ["Paciencia", "Evaluación", "Esfuerzo", "Cosecha", "Perseverancia"],
+    symbols: [
+      { title: "La vid", description: "El proyecto que crece con cuidado y tiempo." },
+      { title: "Las siete monedas", description: "Los resultados que todavía están madurando." },
+      { title: "La azada", description: "El trabajo ya realizado que sostiene la espera." },
+    ],
+    love: "Una relación que necesita tiempo para madurar. Observa si el esfuerzo es recíproco.",
+    work: "Un proyecto en fase de crecimiento. Evalúa resultados sin abandonar antes de tiempo.",
+    health: "Los hábitos sostenidos empiezan a dar frutos. Mantén la constancia sin obsesionarte.",
+    personal: "Aprende a esperar sin quedarte quieto. La paciencia activa revisa y ajusta.",
+    advice: "Revisa un proyecto en marcha: qué funciona, qué no y qué necesitas cambiar antes de la cosecha.",
+    colorKeys: ["emerald", "earth", "gold"],
+  },
+  {
+    n: 71,
+    suit: "oros",
+    rank: 8,
+    scene:
+      "Un artesano trabaja en su banco, tallando una moneda tras otra. Ocho monedas cuelgan de la pared y la ciudad se ve al fondo.",
+    essence: "la constancia que perfecciona el oficio",
+    shadow: "la repetición que olvida el sentido",
+    general:
+      "El Ocho de Oros es la carta del aprendizaje y la dedicación. Cada moneda es una repetición que mejora la anterior. La carta habla de disciplina, pero también de encontrar sentido en lo que se hace. La maestría se construye en lo cotidiano.",
+    message: "La excelencia no llega de golpe: se labra. Haz bien lo que tienes delante hoy.",
+    keywords: ["Dedicación", "Aprendizaje", "Oficio", "Disciplina", "Maestría"],
+    symbols: [
+      { title: "El banco de trabajo", description: "El espacio donde la práctica se convierte en habilidad." },
+      { title: "Las monedas", description: "Las repeticiones que acumulan calidad." },
+      { title: "La ciudad", description: "El contexto que se beneficia de un trabajo bien hecho." },
+    ],
+    love: "Una relación que se construye con pequeños gestos constantes. La rutina también puede ser cuidado.",
+    work: "Formación, práctica o un proyecto que exige precisión. La constancia abre puertas.",
+    health: "Los hábitos pequeños y repetidos transforman el cuerpo. Prioriza la regularidad.",
+    personal: "Elige una habilidad y practícala sin exigir resultados inmediatos. La mejora se nota después.",
+    advice: "Dedica un bloque de tiempo a practicar algo que quieras dominar. Sin distracciones.",
+    colorKeys: ["earth", "gold", "emerald"],
+  },
+  {
+    n: 72,
+    suit: "oros",
+    rank: 9,
+    scene:
+      "Una figura elegante pasea por un jardín con una vid cargada de uvas y nueve monedas. Un halcón posa sobre su mano enguantada.",
+    essence: "la autonomía que disfruta lo cultivado",
+    shadow: "el aislamiento que se disfraza de independencia",
+    general:
+      "El Nueve de Oros es la independencia lograda: el disfrute de lo que se ha construido con esfuerzo. La carta habla de autosuficiencia y placer, pero también de la soledad elegida. Su enseñanza está en disfrutar sin cerrarse a los demás.",
+    message: "Disfruta lo que has construido. La independencia también puede compartirse.",
+    keywords: ["Autonomía", "Disfrute", "Abundancia", "Elegancia", "Soledad"],
+    symbols: [
+      { title: "El jardín", description: "El espacio propio que se ha cultivado con paciencia." },
+      { title: "Las nueve monedas", description: "Los frutos de un esfuerzo sostenido." },
+      { title: "El halcón", description: "La intuición domesticada que acompaña sin ataduras." },
+    ],
+    love: "Una relación que respeta la independencia de cada uno. Disfruta la compañía sin perder tu espacio.",
+    work: "Estabilidad profesional y reconocimiento. Buen momento para disfrutar los resultados.",
+    health: "El bienestar sostenido permite disfrutar. Cuida el equilibrio entre placer y medida.",
+    personal: "Disfruta tu propia compañía sin convertirla en refugio. La autonomía sana también se abre.",
+    advice: "Haz algo que disfrutes en soledad y algo que compartas con alguien. Cuida ambos registros.",
+    colorKeys: ["gold", "emerald", "rose"],
+  },
+  {
+    n: 73,
+    suit: "oros",
+    rank: 10,
+    scene:
+      "Una familia se reúne bajo un arco de piedra; diez monedas forman el árbol de la vida. Dos perros descansan y al fondo se ve la casa.",
+    essence: "la herencia que sostiene a los suyos",
+    shadow: "el patrimonio que se vuelve peso",
+    general:
+      "El Diez de Oros es la culminación material: familia, hogar, legado. La carta habla de estabilidad construida a lo largo del tiempo y de lo que se transmite. También recuerda que toda herencia incluye responsabilidades, no solo bienes.",
+    message: "Lo que construyes puede sostener a otros. Cuida el legado sin olvidar a quienes lo viven.",
+    keywords: ["Legado", "Familia", "Estabilidad", "Patrimonio", "Continuidad"],
+    symbols: [
+      { title: "El arco", description: "El umbral de una casa que contiene varias generaciones." },
+      { title: "El árbol de monedas", description: "La riqueza que crece y se ramifica con el tiempo." },
+      { title: "Los perros", description: "La lealtad cotidiana que sostiene el hogar." },
+    ],
+    love: "Una relación con proyecto familiar o de largo plazo. Habla de lo que quieres transmitir.",
+    work: "Consolidación, herencia profesional o un proyecto que trasciende. Piensa en el largo plazo.",
+    health: "La estabilidad favorece el cuidado. Atiende lo que se hereda y lo que se puede cambiar.",
+    personal: "Revisa qué legado recibes y cuál quieres dejar. No todo se mide en bienes.",
+    advice: "Ordena un asunto familiar o patrimonial pendiente. Habla con las personas implicadas.",
+    colorKeys: ["earth", "gold", "emerald"],
+  },
+  {
+    n: 74,
+    suit: "oros",
+    rank: 11,
+    scene:
+      "Un joven de pie en un campo sostiene una moneda con ambas manos y la estudia con atención. Las montañas y los árboles rodean la escena.",
+    essence: "el aprendizaje que se hace con las manos",
+    shadow: "la distracción que no termina lo empezado",
+    general:
+      "La Sota de Oros es la curiosidad aplicada: aprender haciendo, probar, equivocarse y volver a intentar. Su moneda es un objeto de estudio, no un trofeo. La carta favorece la formación práctica y los comienzos humildes.",
+    message: "El conocimiento también se aprende con las manos. Empieza pequeño y observa con atención.",
+    keywords: ["Aprendizaje", "Curiosidad", "Práctica", "Comienzo", "Atención"],
+    symbols: [
+      { title: "La moneda", description: "El conocimiento que se examina con paciencia." },
+      { title: "El campo", description: "El terreno fértil donde la práctica puede crecer." },
+      { title: "Las montañas", description: "La meta lejana que se alcanza paso a paso." },
+    ],
+    love: "Un vínculo que empieza con timidez o una relación que pide aprender juntos. Ve despacio.",
+    work: "Formación, prácticas o un proyecto que requiere aprender desde cero. Pregunta sin vergüenza.",
+    health: "Los hábitos nuevos necesitan repetición. Empieza con algo pequeño y sostenible.",
+    personal: "Permítete ser principiante. La curiosidad es más útil que la apariencia de saber.",
+    advice: "Elige una habilidad práctica y dedícale un rato hoy. Observa, prueba y anota lo aprendido.",
+    colorKeys: ["earth", "emerald", "ivory"],
+  },
+  {
+    n: 75,
+    suit: "oros",
+    rank: 12,
+    scene:
+      "Un caballero monta un caballo negro y pesado, con una moneda en la mano. Cruza campos arados con calma, sin prisa.",
+    essence: "la constancia que avanza sin prisa",
+    shadow: "la rigidez que no se adapta",
+    general:
+      "El Caballero de Oros es el trabajador constante: avanza despacio, pero no se detiene. Su fuerza está en la fiabilidad y la paciencia; su riesgo, en la terquedad. La carta habla de sostener un compromiso a largo plazo.",
+    message: "El progreso real no siempre es rápido. Sostén el paso y llegarás más lejos.",
+    keywords: ["Constancia", "Fiabilidad", "Paciencia", "Trabajo", "Compromiso"],
+    symbols: [
+      { title: "El caballo pesado", description: "La fuerza que avanza sin necesidad de galopar." },
+      { title: "La moneda", description: "El objetivo concreto que se sostiene en la mano." },
+      { title: "Los campos arados", description: "El trabajo previo que prepara la cosecha." },
+    ],
+    love: "Una relación estable que avanza despacio. La constancia vale más que los gestos grandiosos.",
+    work: "Un proyecto de largo plazo que requiere disciplina. Cumple lo prometido y revisa el rumbo.",
+    health: "La rutina sostenida da resultados. Evita forzar y ajusta cuando el cuerpo lo pida.",
+    personal: "La paciencia es una forma de fuerza. Revisa si tu constancia se volvió rigidez.",
+    advice: "Elige un compromiso y cúmplelo durante una semana sin negociar contigo mismo.",
+    colorKeys: ["earth", "black", "gold"],
+  },
+  {
+    n: 76,
+    suit: "oros",
+    rank: 13,
+    scene:
+      "Una reina sentada en un trono rodeado de cabras y rosas sostiene una moneda. Un jardín frondoso y un arroyo completan la escena.",
+    essence: "la abundancia que se cuida y se comparte",
+    shadow: "la sobreprotección que no deja crecer",
+    general:
+      "La Reina de Oros es la abundancia fértil: cuida, administra y hace crecer lo que tiene entre manos. Su poder está en lo cotidiano, en la capacidad de sostener la vida material y afectiva. La carta habla de generosidad práctica y de arraigo.",
+    message: "La abundancia se cultiva con presencia. Cuida lo tuyo sin olvidar que también puede crecer al compartirse.",
+    keywords: ["Abundancia", "Cuidado", "Fertilidad", "Arraigo", "Generosidad"],
+    symbols: [
+      { title: "El trono de cabras", description: "La fertilidad y la conexión con la tierra." },
+      { title: "Las rosas", description: "La belleza que se cultiva con paciencia y cuidado." },
+      { title: "El arroyo", description: "La vida que fluye y necesita atención para no secarse." },
+    ],
+    love: "Un vínculo cálido, protector y estable. Cuida no confundir cuidado con control.",
+    work: "Gestión, administración o un proyecto que prospera. Tu capacidad de sostener es valiosa.",
+    health: "El cuerpo agradece el cuidado constante. La alimentación y el descanso son prioridad.",
+    personal: "Cuida de ti con la misma generosidad con la que cuidas a otros. La abundancia empieza en casa.",
+    advice: "Prepara algo con tus manos y compártelo. Un gesto material también puede ser afecto.",
+    colorKeys: ["emerald", "earth", "rose"],
+  },
+  {
+    n: 77,
+    suit: "oros",
+    rank: 14,
+    scene:
+      "Un rey sentado en un trono adornado con cabezas de toro sostiene una moneda y un cetro. A su alrededor, viñas, un castillo y tierras cultivadas.",
+    essence: "la prosperidad que se administra con sabiduría",
+    shadow: "el apego que mide todo en posesiones",
+    general:
+      "El Rey de Oros es el dominio del mundo material: administra, protege y hace prosperar lo que tiene. Su autoridad es práctica, no teórica. La carta habla de éxito sostenido y de la responsabilidad de usar los recursos con criterio.",
+    message: "Lo que has construido pide administración, no solo disfrute. Gobierna con generosidad y sentido.",
+    keywords: ["Prosperidad", "Administración", "Seguridad", "Poder", "Responsabilidad"],
+    symbols: [
+      { title: "El trono de toros", description: "La fuerza tranquila y la fertilidad de la tierra." },
+      { title: "Las viñas", description: "La riqueza que se cultiva con tiempo y método." },
+      { title: "El castillo", description: "La estructura que protege lo construido." },
+    ],
+    love: "Una relación estable con proyectos concretos. La seguridad material no sustituye la emocional.",
+    work: "Éxito profesional, liderazgo o gestión de recursos. Decide pensando en el largo plazo.",
+    health: "La estabilidad permite cuidarse. Evita el exceso de trabajo y el sedentarismo.",
+    personal: "Revisa tu relación con el poder y el dinero. La prosperidad también se mide en tiempo y vínculos.",
+    advice: "Ordena tus finanzas o recursos y define un uso que también beneficie a otros.",
+    colorKeys: ["earth", "gold", "emerald"],
+  },
+];
+
+const suitByNumber = (number: number): CardSeries => {
+  if (number <= 35) return "bastos";
+  if (number <= 49) return "copas";
+  if (number <= 63) return "espadas";
+  return "oros";
+};
+
+export const riderWaiteMinors: TarotCard[] = manifest
+  .filter((base) => base.category === "minor")
+  .map((base) => {
+    const seed = minorSeeds.find((entry) => entry.n === base.number);
+
+    if (!seed) {
+      throw new Error(`Falta el contenido del arcano menor ${base.number}`);
+    }
+
+    const series = suitByNumber(base.number);
+    const seriesData = seriesInfo[series];
+    const nameInfo = riderWaiteMinorName(base.number, series);
+    const reduced = reduceNumber(seed.rank);
+    const numberTitle = numberTitles[reduced] ?? "La corte";
+    const numberDescription =
+      numberDescriptions[reduced] ??
+      "Las cartas de corte representan actitudes y formas de ejercer el elemento, no solo personas.";
+
+    return {
+      id: base.id,
+      deckId: "rider-waite",
+      number: base.number,
+      name: nameInfo.name,
+      alternateName: base.alternateName,
+      image: riderWaiteImageFor(base.number),
+      category: "minor",
+      series,
+      centralConcept: capitalize(seed.essence),
+      generalMeaning: `${seed.scene} ${seed.general}`,
+      message: seed.message,
+      keywords: seed.keywords,
+      symbolism: seed.symbols,
+      numerology: {
+        number: seed.rank,
+        reduced,
+        title: numberTitle,
+        description: `${numberDescription} En esta carta, el rango ${seed.rank} dentro de la ${seriesData.label.toLowerCase()} reduce a ${reduced}.`,
+      },
+      astrology: {
+        element: seriesData.element,
+        description: `Correspondencia de estudio: esta carta pertenece a la ${seriesData.label.toLowerCase()} y al elemento ${seriesData.element}, que se asocia con ${seriesData.theme}. En el Rider-Waite-Smith los arcanos menores son escenas ilustradas; la lectura simbólica es una herramienta didáctica.`,
+        isStudyCorrespondence: true,
+      },
+      esoteric: [
+        {
+          label: "Tradición Rider-Waite-Smith",
+          value: "Arcano menor ilustrado",
+          description:
+            "Pamela Colman Smith ilustró las 56 cartas menores con escenas cotidianas y simbólicas. A diferencia del Marsella, aquí la imagen narra una situación además de mostrar el número y el palo.",
+        },
+      ],
+      spiritualPlane: `En el plano espiritual, la carta invita a comprender ${seed.essence} como una experiencia de conciencia, no solo como un resultado externo.`,
+      mentalPlane: `En el plano mental, propone observar las ideas y expectativas que rodean ${seed.essence}, y detectar cuándo aparece ${seed.shadow}.`,
+      materialPlane: `En lo material, se traduce en gestos concretos: ${lowerFirst(seed.advice)}`,
+      uprightMeaning: `${seed.general} ${seed.message}`,
+      reversedMeaning: `La energía se invierte cuando ${seed.shadow} toma el control. No se trata de un castigo, sino de una invitación a revisar el modo en que estás sosteniendo ${seed.essence}.`,
+      loveMeaning: seed.love,
+      workMeaning: seed.work,
+      healthMeaning: seed.health,
+      personalDevelopment: seed.personal,
+      advice: seed.advice,
+      contentStatus: "didactic",
+      colors: resolveRiderWaiteColors(seed.colorKeys),
+    } as TarotCard;
+  });

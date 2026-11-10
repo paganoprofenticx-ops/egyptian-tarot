@@ -18,7 +18,7 @@ export function CardTile({ card, deckName, priority = false, className }: CardTi
   const { isFavorite, isViewed, hydrated } = useTarotStore();
   const favorite = hydrated && isFavorite(card.deckId, card.id);
   const viewed = hydrated && isViewed(card.deckId, card.id);
-  const isMarseille = card.deckId === "marseille";
+  const hasSuits = card.deckId === "marseille" || card.deckId === "rider-waite";
 
   return (
     <Link
@@ -70,7 +70,7 @@ export function CardTile({ card, deckName, priority = false, className }: CardTi
           </p>
         ) : (
           <p className="mt-0.5 text-[0.68rem] uppercase tracking-[0.14em] text-papyrus-dim">
-            {card.category === "major" ? "Arcano mayor" : isMarseille ? "Arcano menor" : "Escena"}
+            {card.category === "major" ? "Arcano mayor" : hasSuits ? "Arcano menor" : "Escena"}
           </p>
         )}
       </div>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1000" viewBox="0 0 640 1000" role="img" aria-label="Imagen pendiente de la carta">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#0C1420"/>
+      <stop offset="0.55" stop-color="#111C2B"/>
+      <stop offset="1" stop-color="#080D15"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="1000" fill="url(#bg)"/>
+  <rect x="22" y="22" width="596" height="956" rx="12" fill="none" stroke="#8FB3C9" stroke-opacity="0.55" stroke-width="2"/>
+  <rect x="38" y="38" width="564" height="924" rx="8" fill="none" stroke="#8FB3C9" stroke-opacity="0.22" stroke-dasharray="6 10"/>
+  <g fill="none" stroke="#8FB3C9" stroke-opacity="0.7" stroke-width="2" stroke-linecap="round">
+    <circle cx="320" cy="430" r="54"/>
+    <path d="M320 376v-24M320 484v24M266 430h-24M374 430h24"/>
+  </g>
+  <text x="320" y="560" text-anchor="middle" fill="#E9E3D5" font-family="Georgia, 'Times New Roman', serif" font-size="30" letter-spacing="4">IMAGEN PENDIENTE</text>
+  <text x="320" y="606" text-anchor="middle" fill="#8FB3C9" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-style="italic" letter-spacing="2">Rider-Waite-Smith</text>
+  <text x="320" y="688" text-anchor="middle" fill="#8FB3C9" fill-opacity="0.65" font-family="Georgia, 'Times New Roman', serif" font-size="12" letter-spacing="3">COLOCA AQUÍ LA LÁMINA DEFINITIVA</text>
+</svg>

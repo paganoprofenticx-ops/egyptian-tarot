@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { egyptianCards } from "@/data/egyptian";
 import { marseilleCards } from "@/data/marseille";
+import { riderWaiteCards } from "@/data/rider-waite";
 import { tarotRepository } from "@/lib/tarot/repository";
 import { CardExperience } from "@/components/cards/CardExperience";
 import { siteConfig } from "@/config/site";
@@ -11,7 +12,7 @@ interface CardPageProps {
 }
 
 export function generateStaticParams() {
-  return [...egyptianCards, ...marseilleCards].map((card) => ({
+  return [...egyptianCards, ...marseilleCards, ...riderWaiteCards].map((card) => ({
     deckId: card.deckId,
     cardId: card.id,
   }));

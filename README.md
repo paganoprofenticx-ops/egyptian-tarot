@@ -1,6 +1,6 @@
 # Arcana · Biblioteca de Tarot
 
-Biblioteca interactiva para estudiar tarot carta a carta. Incluye el **Tarot Egipcio de Margarita Arnal**, con 22 arcanos mayores y 56 escenas numeradas de la tradición egipcia de Kier, y el **Tarot de Marsella**, con sus 78 cartas repartidas en 22 arcanos mayores y 56 menores.
+Biblioteca interactiva para estudiar tarot carta a carta. Incluye el **Tarot Egipcio de Margarita Arnal**, con 22 arcanos mayores y 56 escenas numeradas de la tradición egipcia de Kier; el **Tarot de Marsella**, con sus 78 cartas repartidas en 22 arcanos mayores y 56 menores; y el **Rider-Waite-Smith**, con sus 78 cartas y sus escenas ilustradas.
 
 La aplicación está pensada para el móvil, funciona sin backend y guarda favoritos, historial y progreso en el propio dispositivo. La capa de datos está separada de la interfaz y preparada para incorporar una base de datos o un panel de administración en el futuro.
 
@@ -25,6 +25,7 @@ npm run art            # regenerar las ilustraciones del Tarot Egipcio
 npm run art:marseille  # regenerar las ilustraciones del Tarot de Marsella
 npm run data:marseille # regenerar el manifiesto de cartas de Marsella
 npm run art:import     # importar imágenes reales desde art-source/
+npm run art:import:rider-waite  # importar las láminas del Rider-Waite-Smith
 ```
 
 ## Rutas
@@ -36,6 +37,7 @@ npm run art:import     # importar imágenes reales desde art-source/
 | `/decks` | Catálogo de mazos |
 | `/decks/tarot-egipcio` | Galería de las 78 cartas con búsqueda, filtros y progreso |
 | `/decks/marseille` | Galería de las 78 cartas del Tarot de Marsella |
+| `/decks/rider-waite` | Galería de las 78 cartas del Rider-Waite-Smith |
 | `/decks/[deckId]/cards/[cardId]` | Ficha completa: giro de carta, deslizamiento, secciones y navegación |
 | `/buscar` | Búsqueda global por nombre, palabra clave, número o concepto |
 | `/favoritos` | Cartas guardadas |
@@ -62,6 +64,13 @@ src/
       minors.ts        Contenido de los 56 arcanos menores
       shared.ts        Paleta, palos y rutas de imágenes
       index.ts         Mazo de Marsella, cartas y destacadas
+    rider-waite/
+      cards.json       Manifiesto de las 78 cartas
+      majors.ts        Contenido de los 22 arcanos mayores
+      minors.ts        Contenido de los 56 arcanos menores
+      shared.ts        Paleta, palos y resolución de imágenes
+      art-manifest.json Manifiesto de láminas importadas (vacío por defecto)
+      index.ts         Mazo Rider-Waite-Smith, cartas y destacadas
   lib/
     tarot/             Repositorio, utilidades de búsqueda y carta del día
     storage/           Provider de favoritos, historial y progreso
@@ -70,12 +79,15 @@ scripts/
   generate-card-art.mjs          Genera los SVG del Tarot Egipcio
   generate-marseille-art.mjs     Genera los SVG del Tarot de Marsella
   generate-marseille-manifest.mjs Actualiza el manifiesto de Marsella
-  import-card-art.mjs            Importa las imágenes reales
+  import-card-art.mjs            Importa las imágenes reales del Tarot Egipcio
+  import-rider-waite-art.mjs     Importa las láminas del Rider-Waite-Smith
 art-source/
   tarot-egipcio/          Carpeta donde dejar las imágenes (ver README interno)
+  rider-waite/            Carpeta para las láminas del Rider-Waite-Smith
 public/images/
   cards/egyptian/         78 SVG provisionales (una por carta)
   cards/marseille/        78 SVG originales + dorso.svg
+  cards/rider-waite/      Marcador neutro (a la espera de las láminas)
   cards/back.svg          Dorso provisional egipcio
   decks/                  Portadas de los mazos
 ```
@@ -120,6 +132,8 @@ Las imágenes actuales son **SVG originales generados por script**. No reproduce
 
 Ambos scripts están separados para que regenerar un mazo no sobrescriba el arte del otro.
 
+El **Rider-Waite-Smith** no genera arte por carta. Mientras no existan las láminas definitivas, las 78 cartas apuntan a un marcador neutro en `public/images/cards/rider-waite/placeholder.svg`. La portada es `public/images/decks/rider-waite.svg`. Cuando el usuario aporte las imágenes, el importador las incorpora sin tocar el contenido de las fichas.
+
 ## Añadir las imágenes reales
 
 Cuando tengas las láminas (propias, escaneadas o con licencia), deja los archivos en `art-source/tarot-egipcio/` y ejecuta:
@@ -135,6 +149,22 @@ npm run art:import
 - `npm run art:import -- --clean` elimina lo importado y vuelve a los SVG.
 
 El script copia las imágenes a `public/` y actualiza `src/data/egyptian/art-manifest.json`. La app resuelve cada carta con `imageFor()`: usa la imagen del manifiesto si existe y, si no, el SVG. No hay que tocar componentes ni rutas.
+
+### Rider-Waite-Smith
+
+Deja las láminas en `art-source/rider-waite/` y ejecuta:
+
+```bash
+npm run art:import:rider-waite
+```
+
+- Nombres: `00.jpg` … `77.jpg` (también `00-el-loco.jpg`, `22-as-de-bastos.png`), o PNG/WebP.
+- Numeración: mayores `00–21`; menores `22–77` (Bastos `22–35`, Copas `36–49`, Espadas `50–63`, Oros `64–77`).
+- Dorso: `dorso.jpg` / `back.jpg`. Portada: `portada.jpg` / `cover.jpg`.
+- Las cartas sin archivo siguen mostrando el marcador neutro.
+- `npm run art:import:rider-waite -- --clean` elimina lo importado y vuelve al marcador.
+
+El manifiesto se guarda en `src/data/rider-waite/art-manifest.json` y `riderWaiteImageFor()` resuelve cada carta con él.
 
 > Las imágenes importadas no se incluyen en el repositorio. No publiques láminas de barajas comerciales sin autorización.
 
@@ -156,6 +186,7 @@ Las fichas separan la tradición de la síntesis didáctica:
 - Los **arcanos mayores** tienen ficha completa con simbolismo, planos e interpretaciones.
 - Las **56 escenas menores** del Tarot Egipcio usan los nombres de la tradición de Kier y una síntesis didáctica propia.
 - Los **56 arcanos menores** del Tarot de Marsella se organizan en los palos de Bastos, Copas, Espadas y Oros, del As al Rey.
+- Los **56 arcanos menores** del Rider-Waite-Smith siguen la misma estructura de palos y añaden la escena ilustrada, la esencia, la sombra y los símbolos propios de cada carta.
 - Las correspondencias astrológicas, cabalísticas y numerológicas se presentan explícitamente como **claves de estudio**, no como hechos impresos en la baraja.
 - En el Tarot Egipcio, las series de Bastos, Copas, Espadas y Oros son una agrupación didáctica; la baraja no lleva palos impresos ni cartas de corte.
 - El contenido no sustituye asesoramiento médico, legal o psicológico.

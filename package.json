@@ -11,6 +11,7 @@
     "art": "node scripts/generate-card-art.mjs",
     "art:marseille": "node scripts/generate-marseille-art.mjs",
     "art:import": "node scripts/import-card-art.mjs",
+    "art:import:rider-waite": "node scripts/import-rider-waite-art.mjs",
     "data:marseille": "node scripts/generate-marseille-manifest.mjs"
   },
   "dependencies": {

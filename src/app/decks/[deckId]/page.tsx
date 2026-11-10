@@ -14,7 +14,7 @@ interface DeckPageProps {
 }
 
 export function generateStaticParams() {
-  return [{ deckId: "tarot-egipcio" }, { deckId: "marseille" }];
+  return [{ deckId: "tarot-egipcio" }, { deckId: "marseille" }, { deckId: "rider-waite" }];
 }
 
 export async function generateMetadata({ params }: DeckPageProps): Promise<Metadata> {
