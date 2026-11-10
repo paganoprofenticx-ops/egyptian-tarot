@@ -13,6 +13,7 @@ export const siteConfig = {
   nav: [
     { href: "/", label: "Inicio" },
     { href: "/decks", label: "Mazos" },
+    { href: "/carta-del-dia", label: "Carta del día" },
     { href: "/favoritos", label: "Favoritos" },
     { href: "/historial", label: "Historial" },
   ],

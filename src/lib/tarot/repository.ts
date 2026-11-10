@@ -24,12 +24,18 @@ export interface SearchHit {
   excerpt: string;
 }
 
+export interface MajorArcanaEntry {
+  card: TarotCard;
+  deck: TarotDeck;
+}
+
 export interface TarotRepository {
   getDecks(): Promise<TarotDeck[]>;
   getDeck(deckId: string): Promise<TarotDeck | null>;
   getDeckWithCards(deckId: string): Promise<DeckWithCards | null>;
   getCards(deckId: string, query?: CardQuery): Promise<CardSummary[]>;
   getCard(deckId: string, cardId: string): Promise<TarotCard | null>;
+  getMajorArcana(): Promise<MajorArcanaEntry[]>;
   getCardWithNeighbours(
     deckId: string,
     cardId: string,
@@ -125,6 +131,16 @@ class LocalTarotRepository implements TarotRepository {
     const deck = findDeck(deckId);
     if (!deck) return null;
     return (cardsByDeck[deckId] ?? []).find((card) => card.id === cardId) ?? null;
+  }
+
+  async getMajorArcana(): Promise<MajorArcanaEntry[]> {
+    return decks
+      .filter((deck) => deck.isAvailable)
+      .flatMap((deck) =>
+        (cardsByDeck[deck.id] ?? [])
+          .filter((card) => card.category === "major")
+          .map((card) => ({ card, deck })),
+      );
   }
 
   async getCardWithNeighbours(deckId: string, cardId: string) {

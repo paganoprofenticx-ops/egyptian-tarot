@@ -8,12 +8,16 @@ import {
   Sparkles,
 } from "lucide-react";
 import { tarotRepository } from "@/lib/tarot/repository";
+import { getDailyCard } from "@/lib/tarot/daily";
 import { CardImage } from "@/components/ui/CardImage";
 import { CardTile } from "@/components/cards/CardTile";
+import { DailyCardSpotlight } from "@/components/daily/DailyCardSpotlight";
 import { DeckCard } from "@/components/decks/DeckCard";
 import { ContinueReading } from "@/components/home/ContinueReading";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { siteConfig } from "@/config/site";
+
+export const dynamic = "force-dynamic";
 
 const readingSteps = [
   {
@@ -34,10 +38,11 @@ const readingSteps = [
 ];
 
 export default async function HomePage() {
-  const [decks, featured, egyptianDeck] = await Promise.all([
+  const [decks, featured, egyptianDeck, dailyCard] = await Promise.all([
     tarotRepository.getDecks(),
     tarotRepository.getFeatured("tarot-egipcio", 6),
     tarotRepository.getDeck("tarot-egipcio"),
+    getDailyCard(),
   ]);
 
   const heroCards = featured.slice(0, 5);
@@ -130,6 +135,12 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {dailyCard ? (
+        <section className="container-page py-8 sm:py-10">
+          <DailyCardSpotlight daily={dailyCard} />
+        </section>
+      ) : null}
+
       <section className="container-page py-8 sm:py-10">
         {fallback ? (
           <ContinueReading fallbackCard={fallback} fallbackDeckName={egyptianDeck?.name ?? "Tarot Egipcio"} />
@@ -183,7 +194,7 @@ export default async function HomePage() {
         <SectionHeading
           eyebrow="Cómo funciona"
           title="Tres gestos antes de interpretar"
-          description="La biblioteca no lanza tiradas automáticas ni promete certezas. Te da material para estudiar y pensar."
+          description="La carta del día no adivina el futuro: propone una imagen y una pregunta para mirar tu jornada con más atención."
         />
         <div className="mt-7 grid gap-4 md:grid-cols-3">
           {readingSteps.map((step, index) => {

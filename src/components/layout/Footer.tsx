@@ -6,6 +6,7 @@ const columns = [
   {
     title: "Explorar",
     links: [
+      { href: "/carta-del-dia", label: "La carta del día" },
       { href: "/decks", label: "Todos los mazos" },
       { href: "/decks/tarot-egipcio", label: "Tarot Egipcio" },
       { href: "/decks/marseille", label: "Tarot de Marsella" },

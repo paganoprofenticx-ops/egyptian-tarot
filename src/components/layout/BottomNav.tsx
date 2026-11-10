@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Clock3, Heart, Home, Layers, Search } from "lucide-react";
+import { Clock3, Heart, Home, Layers, Sparkles } from "lucide-react";
 import { useTarotStore } from "@/lib/storage/tarot-store";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/", label: "Inicio", icon: Home },
   { href: "/decks", label: "Mazos", icon: Layers },
-  { href: "/buscar", label: "Buscar", icon: Search },
+  { href: "/carta-del-dia", label: "Hoy", icon: Sparkles },
   { href: "/favoritos", label: "Favoritos", icon: Heart },
   { href: "/historial", label: "Historial", icon: Clock3 },
 ];

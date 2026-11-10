@@ -31,7 +31,8 @@ npm run art:import     # importar imágenes reales desde art-source/
 
 | Ruta | Contenido |
 | --- | --- |
-| `/` | Portada, continuación de lectura, selector de mazos y cartas destacadas |
+| `/` | Portada, carta del día, continuación de lectura, selector de mazos y cartas destacadas |
+| `/carta-del-dia` | Arcano mayor aleatorio del día y resumen para la jornada |
 | `/decks` | Catálogo de mazos |
 | `/decks/tarot-egipcio` | Galería de las 78 cartas con búsqueda, filtros y progreso |
 | `/decks/marseille` | Galería de las 78 cartas del Tarot de Marsella |
@@ -62,7 +63,7 @@ src/
       shared.ts        Paleta, palos y rutas de imágenes
       index.ts         Mazo de Marsella, cartas y destacadas
   lib/
-    tarot/             Repositorio y utilidades de búsqueda
+    tarot/             Repositorio, utilidades de búsqueda y carta del día
     storage/           Provider de favoritos, historial y progreso
   types/tarot.ts       Modelo de datos canónico
 scripts/
@@ -94,7 +95,9 @@ Los campos opcionales permiten incorporar nuevas barajas sin rellenar toda la fi
 
 ### Repositorio
 
-`src/lib/tarot/repository.ts` expone una interfaz asíncrona (`getDecks`, `getDeck`, `getCards`, `getCard`, `getCardWithNeighbours`, `getFeatured`, `getGlobalSummaries`, `search`). La implementación actual es local y estática.
+`src/lib/tarot/repository.ts` expone una interfaz asíncrona (`getDecks`, `getDeck`, `getCards`, `getCard`, `getCardWithNeighbours`, `getFeatured`, `getGlobalSummaries`, `getMajorArcana`, `search`). La implementación actual es local y estática.
+
+`src/lib/tarot/daily.ts` elige la carta del día entre los arcanos mayores de los mazos disponibles. La selección es determinista a partir de la fecha (misma carta para todo el día) y el resumen se construye con los campos de interpretación de la ficha (`uprightMeaning`, `advice`, `loveMeaning`, `workMeaning`, `healthMeaning`).
 
 Para conectar Supabase, Prisma u otra fuente, se crea otra clase que implemente `TarotRepository` y se cambia la exportación `tarotRepository`. Las páginas y componentes no necesitan cambios.
 
